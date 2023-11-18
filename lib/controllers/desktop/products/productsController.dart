@@ -1,38 +1,38 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:pos_fyp/models/category_model.dart';
 import 'package:pos_fyp/models/discount_model.dart';
+import 'package:pos_fyp/models/products/products_model.dart';
+import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/utils/utils.dart';
 
 class ProductsController extends GetxController {
-  RxList<CategoryModel> _categoryList = <CategoryModel>[].obs;
-  RxList<DiscountModel> _discountList = <DiscountModel>[].obs;
+  final RxList<CategoryModel> _categoryList = <CategoryModel>[].obs;
+  final RxList<DiscountModel> _discountList = <DiscountModel>[].obs;
+
+  RxList<ProductsModel> productsList = <ProductsModel>[].obs;
 
   final RxBool _isCategoryLoading = false.obs;
   final RxBool _isProductLoading = false.obs;
-  final RxBool _isDiscountLoading = false.obs;
 
   RxBool get isCategoryLoading => _isCategoryLoading;
   RxBool get isProductLoading => _isProductLoading;
-  RxBool get isDiscountLoading => _isDiscountLoading;
 
   RxList<CategoryModel> get categoryList => _categoryList;
-  RxList<DiscountModel> get discountList => _discountList;
 
   final _entryFormKey = GlobalKey<FormState>();
-  final _discountFormKey = GlobalKey<FormState>();
   final _categoryFormKey = GlobalKey<FormState>();
 
   final catInitValue = 'Select'.obs;
-  final discInitValue = 'Select'.obs;
 
   late String _discount;
   late String _category;
-  late double discountValue;
 
   GlobalKey<FormState> get entryFormKey => _entryFormKey;
-  GlobalKey<FormState> get discountFormKey => _discountFormKey;
   GlobalKey<FormState> get categoryFormKey => _categoryFormKey;
 
   set setDiscount(String value) {
@@ -43,15 +43,13 @@ class ProductsController extends GetxController {
     _category = value;
   }
 
-  TextEditingController productCodeController = TextEditingController();
-  TextEditingController productNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
-  TextEditingController productQuantityController = TextEditingController();
-  TextEditingController productPurchasePriceController = TextEditingController();
-  TextEditingController productSalePriceController = TextEditingController();
-  TextEditingController productDiscountController = TextEditingController();
-  TextEditingController productGSTPerController = TextEditingController();
-  TextEditingController productManufacturerController = TextEditingController();
+  TextEditingController qtyController = TextEditingController();
+  TextEditingController purchasePriceController = TextEditingController();
+  TextEditingController salePriceController = TextEditingController();
+  TextEditingController discountController = TextEditingController();
+  TextEditingController manufacturerController = TextEditingController();
 
   FocusNode codeFocusNode = FocusNode();
   FocusNode nameFocusNode = FocusNode();
@@ -64,14 +62,10 @@ class ProductsController extends GetxController {
   FocusNode manufacturerFocusNode = FocusNode();
   FocusNode addButtonFocusNode = FocusNode();
 
-  FocusNode addDiscBtnFocusNode = FocusNode();
   FocusNode addCatBtnFocusNode = FocusNode();
 
   void addProduct(BuildContext context) async {
     String? categoryObjectId;
-    String? discountObjectId;
-    int? dValue;
-
     isProductLoading.value = true;
 
     QueryBuilder<ParseObject> queryCategory = QueryBuilder(ParseObject('Category'))
@@ -82,38 +76,49 @@ class ProductsController extends GetxController {
       categoryObjectId = api1.get('objectId');
     }
 
-    QueryBuilder<ParseObject> discountQuery = QueryBuilder(ParseObject('Discount'))
-      ..whereEqualTo('discountPercentage', _discount);
-    final apiResponse2 = await discountQuery.query();
-    if (apiResponse2.success && apiResponse2.results != null) {
-      final api2 = apiResponse2.results!.first;
-      discountObjectId = api2.get('objectId');
-      dValue = api2.get('discountValue');
-    }
-
-    // Calculating gst %
-    int gstPercentage = int.parse(productGSTPerController.text.trim());
-    double gstValue = (gstPercentage / 100) * int.parse(productSalePriceController.text.trim());
-    double netValue = (int.parse(productSalePriceController.text.trim()) - dValue! - gstValue);
+    int discount = int.parse(discountController.text.trim().replaceAll(new RegExp(r'[^0-9]'), '')); // 15%
+    double discountRate = discount / 100;
+    double purchasePrice = double.parse(purchasePriceController.text.trim());
+    double discountValue = purchasePrice * discountRate;
+    double netValue = purchasePrice - discountValue;
 
     var product = ParseObject('Products')
-      ..set('name', productNameController.text)
+      ..set('name', nameController.text)
       ..set('category', (ParseObject('Category')..objectId = categoryObjectId).toPointer())
-      ..set('quantity', productQuantityController.text)
-      ..set('discount', (ParseObject('Discount')..objectId = discountObjectId).toPointer())
-      ..set('purchasePrice', double.parse(productPurchasePriceController.text.trim()))
-      ..set('salePrice', double.parse(productSalePriceController.text.trim()))
-      ..set('gstPercentage', productGSTPerController.text.trim())
-      ..set('gstValue', gstValue)
-      ..set('netValue', netValue)
-      ..set('manufacturer', productManufacturerController.text.trim());
-    product.save().then((value) {
+      ..set('quantity', qtyController.text)
+      ..set('discount', discountController.text.trim())
+      ..set('salePrice', double.parse(salePriceController.text.trim()))
+      ..set('purchasePrice', double.parse(purchasePriceController.text.trim()))
+      ..set('netValue', netValue.toString())
+      ..set('manufacturer', manufacturerController.text.trim());
+
+    final apiResponse = await product.save();
+
+    if (apiResponse.success && apiResponse.results != null) {
       isProductLoading.value = false;
-      Utils.showDialogueBox(context, 'Item added', 'Item has been added', const Icon(Icons.info_outline_rounded));
       Utils.fieldFocusChange(context, addButtonFocusNode, nameFocusNode);
-    }).onError((error, stackTrace) {
-      Utils.showDialogueBox(context, 'Error', error.toString(), const Icon(Icons.cloud_off_rounded));
-    });
+    } else {
+      isProductLoading.value = false;
+      Utils.showDialogueBox(
+        context,
+        'Error',
+        apiResponse.error!.message,
+        Icon(Icons.error_outline, color: AppColors.redColor, size: 60.0),
+      );
+    }
+  }
+
+  Future<List<ProductsModel>> getProducts() async {
+    QueryBuilder<ParseObject> queryProducts = QueryBuilder(ParseObject('Products'))..includeObject(['category']);
+    final apiResonse = await queryProducts.query();
+    if (apiResonse.success == true && apiResonse.results != null) {
+      final decodeData = jsonDecode(apiResonse.results.toString());
+      for (Map i in decodeData) {
+        productsList.add(ProductsModel.fromJson(i.cast()));
+      }
+      return productsList;
+    }
+    return productsList;
   }
 
   void addCategory(BuildContext context) {
@@ -130,6 +135,7 @@ class ProductsController extends GetxController {
 
   Future<void> getCategoryList() async {
     categoryList.clear();
+    isCategoryLoading.value = true;
     categoryList.add(CategoryModel('0', 'Select'));
     QueryBuilder<ParseObject> parseQuery = QueryBuilder(ParseObject('Category'))..keysToReturn(['categoryName']);
     final apiResponse = await parseQuery.query();
@@ -138,39 +144,9 @@ class ProductsController extends GetxController {
       for (ParseObject obj in apiRes) {
         categoryList.add(CategoryModel(obj.get('objectId'), obj.get('categoryName')));
       }
+      isCategoryLoading.value = false;
     } else {
-      print(apiResponse.error);
-    }
-  }
-
-  Future<void> addDiscount() async {
-    isDiscountLoading.value = true;
-    // calculating discount
-    var disc = productDiscountController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    var discountAmount = int.parse(disc);
-    discountValue = (discountAmount / 100) * int.parse(productSalePriceController.text.trim());
-    ParseObject discountObj = ParseObject('Discount')
-      ..set('discountValue', discountValue)
-      ..set('discountPercentage', productDiscountController.text.trim());
-    discountObj.save().then((value) {
-      isDiscountLoading.value = false;
-      Get.back();
-    }).onError((error, stackTrace) {
-      print(error);
-    });
-  }
-
-  Future<void> getDiscountList() async {
-    discountList.clear();
-    discountList.add(DiscountModel('0', 'Select', 'Select'));
-    QueryBuilder<ParseObject> parseQuery = QueryBuilder(ParseObject('Discount'));
-    final apiResponse = await parseQuery.query();
-    if (apiResponse.success && apiResponse.results != null) {
-      final apiRes = apiResponse.results!;
-      for (ParseObject obj in apiRes) {
-        discountList.add(
-            DiscountModel(obj.get('objectId'), obj.get('discountPercentage'), obj.get('discountValue').toString()));
-      }
+      isCategoryLoading.value = false;
     }
   }
 }

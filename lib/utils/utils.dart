@@ -39,15 +39,15 @@ class Utils {
       context: context,
       builder: (context) {
         return FutureBuilder(
-          future: Future.delayed(const Duration(seconds: 1)).then((value) => true),
+          future: Future.delayed(const Duration(seconds: 3)).then((value) => true),
           builder: (context, snapshot) {
             if (snapshot.hasData) Navigator.of(context).pop();
             return AlertDialog(
-              title: Row(
+              title: Column(
                 children: [
                   icon,
                   10.width,
-                  Text(title),
+                  Text(textAlign: TextAlign.center, title),
                 ],
               ),
               content: Text(message),

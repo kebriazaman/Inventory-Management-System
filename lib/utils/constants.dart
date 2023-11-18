@@ -5,7 +5,7 @@ const kTextFormFieldDecoration = InputDecoration(
   labelText: 'Product Code',
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10)),
-    borderSide: BorderSide(color: Colors.black),
+    borderSide: BorderSide(color: AppColors.blackColor),
   ),
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: AppColors.textFormFieldBorderColor),

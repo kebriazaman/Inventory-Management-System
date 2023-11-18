@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/desktop/products/productsController.dart';
 import 'package:pos_fyp/res/app_color.dart';
+import 'package:pos_fyp/res/components/dashboard/custom_circular_progress_indicator.dart';
 import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/views/desktop_views/products/widgets/category_form.dart';
-import 'package:pos_fyp/views/desktop_views/products/widgets/discount_form.dart';
 
 class ProductsEntryForm extends StatelessWidget {
   @override
@@ -27,7 +27,7 @@ class ProductsEntryForm extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.productNameController,
+                      myController: productsController.nameController,
                       currentFocusNode: productsController.nameFocusNode,
                       nextFocusNode: productsController.categoryFocusNode,
                       validator: (value) => GetUtils.isNull(value) || GetUtils.isLengthLessOrEqual(value, 3)
@@ -39,49 +39,47 @@ class ProductsEntryForm extends StatelessWidget {
                   10.width,
                   Obx(
                     () => Expanded(
-                      child: DropdownButtonFormField(
-                        value: productsController.catInitValue.value,
-                        focusNode: productsController.categoryFocusNode,
-                        dropdownColor: AppColors.dropDownColor,
-                        validator: (v) => v == 'Select' || v == null ? 'Invalid item selected' : null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: kDropdownFormFieldDecoration.copyWith(
-                          prefixIcon: InkWell(
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: 'Add Category',
-                                content: const CategoryForm(),
-                              );
-                            },
-                            child: const Icon(Icons.add),
-                          ),
-                        ),
-                        items: productsController.categoryList.map<DropdownMenuItem<String>>(
-                          (e) {
-                            return DropdownMenuItem(
-                              child: Text(e.name),
-                              value: e.name,
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (v) {
-                          productsController.setCategory = v.toString();
-                          Utils.fieldFocusChange(
-                              context, productsController.categoryFocusNode, productsController.qtyFocusNode);
-                        },
-                      ),
+                      child: productsController.isCategoryLoading.value == true
+                          ? CustomCircularProgressIndicator()
+                          : DropdownButtonFormField(
+                              value: productsController.catInitValue.value,
+                              focusNode: productsController.categoryFocusNode,
+                              dropdownColor: AppColors.dropDownColor,
+                              validator: (v) => v == 'Select' || v == null ? 'Invalid item selected' : null,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              decoration: kDropdownFormFieldDecoration.copyWith(
+                                prefixIcon: InkWell(
+                                  onTap: () {
+                                    Get.defaultDialog(
+                                      title: 'Add Category',
+                                      content: const CategoryForm(),
+                                    );
+                                  },
+                                  child: const Icon(Icons.add),
+                                ),
+                              ),
+                              items: productsController.categoryList.map<DropdownMenuItem<String>>(
+                                (e) {
+                                  return DropdownMenuItem(
+                                    child: Text(e.name),
+                                    value: e.name,
+                                  );
+                                },
+                              ).toList(),
+                              onChanged: (v) {
+                                productsController.setCategory = v.toString();
+                                Utils.fieldFocusChange(
+                                    context, productsController.categoryFocusNode, productsController.qtyFocusNode);
+                              },
+                            ),
                     ),
                   ),
-                ],
-              ),
-              20.height,
-              Row(
-                children: [
+                  10.width,
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.productQuantityController,
+                      myController: productsController.qtyController,
                       currentFocusNode: productsController.qtyFocusNode,
-                      nextFocusNode: productsController.purchasePriceFocusNode,
+                      nextFocusNode: productsController.salePriceFocusNode,
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
                           ? 'Enter the numeric value'
                           : null,
@@ -90,13 +88,17 @@ class ProductsEntryForm extends StatelessWidget {
                       ),
                     ),
                   ),
-                  10.width,
+                ],
+              ),
+              20.height,
+              Row(
+                children: [
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.productPurchasePriceController,
-                      currentFocusNode: productsController.purchasePriceFocusNode,
-                      nextFocusNode: productsController.salePriceFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Purchase Price'),
+                      myController: productsController.salePriceController,
+                      currentFocusNode: productsController.salePriceFocusNode,
+                      nextFocusNode: productsController.purchasePriceFocusNode,
+                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
                           ? 'Enter the numeric value'
                           : null,
@@ -105,13 +107,27 @@ class ProductsEntryForm extends StatelessWidget {
                   10.width,
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.productSalePriceController,
-                      currentFocusNode: productsController.salePriceFocusNode,
+                      myController: productsController.purchasePriceController,
+                      currentFocusNode: productsController.purchasePriceFocusNode,
                       nextFocusNode: productsController.discountFocusNode,
                       textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
-                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
-                          ? 'Enter numeric value'
-                          : null,
+                      validator: (value) {
+                        if (GetUtils.isLengthLessThan(value, productsController.purchasePriceController.text.length)) {
+                          return 'Purchase price is less than sale price';
+                        } else if (!GetUtils.isNumericOnly(value!)) {
+                          return 'Enter numeric value';
+                        }
+                      },
+                    ),
+                  ),
+                  10.width,
+                  Expanded(
+                    child: TextInputField(
+                      myController: productsController.discountController,
+                      currentFocusNode: productsController.discountFocusNode,
+                      nextFocusNode: productsController.manufacturerFocusNode,
+                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Enter the discount%'),
+                      validator: (value) => RegExp(r"^[^%]*$").hasMatch(value!) ? 'Enter the percentage value' : null,
                     ),
                   ),
                 ],
@@ -119,57 +135,9 @@ class ProductsEntryForm extends StatelessWidget {
               20.height,
               Row(
                 children: [
-                  Obx(
-                    () => Expanded(
-                      child: DropdownButtonFormField(
-                        value: productsController.discInitValue.value,
-                        focusNode: productsController.discountFocusNode,
-                        dropdownColor: AppColors.dropDownColor,
-                        validator: (v) => v == 'Select' || v == null ? 'Invalid item selected' : null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: kDropdownFormFieldDecoration.copyWith(
-                          prefixIcon: InkWell(
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: 'Add Category',
-                                content: const DiscountForm(),
-                              );
-                            },
-                            child: const Icon(Icons.add),
-                          ),
-                        ),
-                        items: productsController.discountList.map<DropdownMenuItem<String>>(
-                          (e) {
-                            return DropdownMenuItem(
-                              value: e.discountPer,
-                              child: Text(e.discountPer),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (v) {
-                          productsController.setDiscount = v.toString();
-                          Utils.fieldFocusChange(
-                              context, productsController.discountFocusNode, productsController.gstFocusNode);
-                        },
-                      ),
-                    ),
-                  ),
-                  10.width,
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.productGSTPerController,
-                      currentFocusNode: productsController.gstFocusNode,
-                      nextFocusNode: productsController.manufacturerFocusNode,
-                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
-                          ? 'Enter the numeric value'
-                          : null,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Gst %'),
-                    ),
-                  ),
-                  10.width,
-                  Expanded(
-                    child: TextInputField(
-                      myController: productsController.productManufacturerController,
+                      myController: productsController.manufacturerController,
                       currentFocusNode: productsController.manufacturerFocusNode,
                       nextFocusNode: productsController.addButtonFocusNode,
                       validator: (value) => GetUtils.isNum(value!) || !GetUtils.isLengthGreaterOrEqual(value, 4)
@@ -205,6 +173,7 @@ class ProductsEntryForm extends StatelessWidget {
                           ? () {
                               if (productsController.entryFormKey.currentState!.validate()) {
                                 productsController.addProduct(context);
+                                productsController.getProducts();
                               }
                             }
                           : null,

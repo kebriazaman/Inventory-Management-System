@@ -5,6 +5,7 @@ import 'package:pos_fyp/res/components/dashboard/round_button.dart';
 import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/constants.dart';
+import 'package:pos_fyp/utils/extensions.dart';
 
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class LoginFormWidget extends StatelessWidget {
                 currentFocusNode: loginController.userNameFocusNode,
                 nextFocusNode: loginController.passwordFocusNode,
                 textFormFieldDecoration: kLoginInputFieldDecoration,
+                validator: (value) => !GetUtils.isEmail(value!) ? 'Enter valid email' : null,
               ),
               SizedBox(height: Get.height * 0.03),
               Obx(
@@ -41,53 +43,30 @@ class LoginFormWidget extends StatelessWidget {
                   obscurePassword: loginController.obscurePassword.value,
                   textFormFieldDecoration: kLoginInputFieldDecoration.copyWith(
                       labelText: 'Enter your password',
-                      suffixIcon: loginController.obscurePassword.value == true
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off)),
+                      suffixIcon: IconButton(
+                        onPressed: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
+                        icon: loginController.obscurePassword.value == true
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                      )),
                   onTap: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
-                  validator: (value) {
-                    if (GetUtils.isLengthLessOrEqual(value, 6)) {
-                      return 'Invalid password';
+                  validator: (value) => GetUtils.isLengthLessThan(value, 8) ? 'Password is incorrect' : null,
+                ),
+              ),
+              30.height,
+              Obx(
+                () => RoundButton(
+                  isLoading: loginController.isLoading.value,
+                  myFocusNode: loginController.buttonFocusNode,
+                  title: 'LOG IN',
+                  onPressed: () {
+                    if (loginController.loginFormKey.currentState!.validate()) {
+                      loginController.userLogin(context);
                     }
                   },
                 ),
               ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Obx(
-                        () => Checkbox(
-                          side: BorderSide.none,
-                          value: loginController.isChecked.value,
-                          onChanged: (v) {
-                            loginController.isChecked.value = v!;
-                          },
-                          fillColor: MaterialStateProperty.all(Colors.white38),
-                          checkColor: Colors.black38,
-                          splashRadius: 0.0,
-                        ),
-                      ),
-                      const Text('Remember me')
-                    ],
-                  ),
-                  RoundButton(
-                    myFocusNode: loginController.buttonFocusNode,
-                    title: 'LOG IN',
-                    onPressed: () {
-                      if (loginController.loginFormKey.currentState!.validate()) {
-                        Get.offNamed(RouteName.desktopScreen);
-                      } else {
-                        print('Invalid email or password');
-                      }
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+              20.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

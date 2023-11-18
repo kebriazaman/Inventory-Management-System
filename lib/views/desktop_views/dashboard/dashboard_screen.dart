@@ -6,6 +6,7 @@ import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/assets/image_assets.dart';
 import 'package:pos_fyp/res/components/dashboard/info_card_widget.dart';
 import 'package:pos_fyp/res/components/dashboard/info_list_card_widget.dart';
+import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/utils/wave_painter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -64,7 +65,11 @@ class DashboardScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () => ParseUser.currentUser().then(
             (currentUser) async {
-              if (currentUser != null) await currentUser.logout();
+              if (currentUser != null) {
+                await currentUser.logout();
+                Get.offNamed(RouteName.loginScreen);
+              }
+              ;
             },
           ),
           icon: Icon(Icons.arrow_back_ios),

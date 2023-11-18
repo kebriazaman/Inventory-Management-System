@@ -26,7 +26,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     // TODO: implement initState
     super.initState();
     productsController.getCategoryList();
-    productsController.getDiscountList();
+    productsController.getProducts();
   }
 
   @override
@@ -82,101 +82,94 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ],
                 ),
                 Expanded(
-                  child: SfDataGrid(
-                      columnWidthMode: ColumnWidthMode.fill,
-                      columns: <GridColumn>[
-                        GridColumn(
-                          columnName: 'id',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('ID'),
+                  child: Obx(
+                    () => SfDataGrid(
+                        columnWidthMode: ColumnWidthMode.fill,
+                        columns: <GridColumn>[
+                          GridColumn(
+                            columnName: 'id',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('ID'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'name',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Name'),
+                          GridColumn(
+                            columnName: 'name',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Name'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'category',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Category'),
+                          GridColumn(
+                            columnName: 'category',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Category'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'qty',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Quantity'),
+                          GridColumn(
+                            columnName: 'qty',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Quantity'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'discountValue',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Discount Value'),
+                          GridColumn(
+                            columnName: 'discount %',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Discount %'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'discount %',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Discount %'),
+                          GridColumn(
+                            columnName: 'salePrice',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Sale Price'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'salePrice',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Sale Price'),
+                          GridColumn(
+                            columnName: 'purchasePrice',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Purchase Price'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'purchasePrice',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Purchase Price'),
+                          GridColumn(
+                            columnName: 'netValue',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Net Value'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'netValue',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Net Value'),
+                          GridColumn(
+                            columnName: 'manufacturer',
+                            label: Container(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text('Manufacturer'),
+                              ),
                             ),
                           ),
-                        ),
-                        GridColumn(
-                          columnName: 'manufacturer',
-                          label: Container(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Manufacturer'),
-                            ),
-                          ),
-                        ),
-                      ],
-                      source: ProductDataSource()),
+                        ],
+                        source: ProductDataSource(products: productsController.productsList.value)),
+                  ),
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:pos_fyp/res/components/dashboard/round_button.dart';
 import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/constants.dart';
+import 'package:pos_fyp/utils/extensions.dart';
 
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({Key? key}) : super(key: key);
@@ -27,11 +28,7 @@ class SignupFormWidget extends StatelessWidget {
               currentFocusNode: signupController.emailFocusNode,
               nextFocusNode: signupController.passwordFocusNode,
               textFormFieldDecoration: kSignupInputFieldDecoration,
-              validator: (v) {
-                if (!GetUtils.isEmail(v.toString())) {
-                  return 'Invalid email entered';
-                }
-              },
+              validator: (v) => !GetUtils.isEmail(v!) ? 'Enter valid email' : null,
             ),
             SizedBox(height: Get.height * .03),
             Obx(
@@ -49,29 +46,22 @@ class SignupFormWidget extends StatelessWidget {
                   ),
                   hintText: 'Enter your Password',
                 ),
-                validator: (v) {
-                  if (!GetUtils.isLengthGreaterOrEqual(v, 8)) {
-                    return 'Password must be at least 8 characters long';
-                  }
-                },
+                validator: (v) =>
+                    !GetUtils.isLengthGreaterOrEqual(v, 8) ? 'Password must be at least 8 characters long' : null,
               ),
             ),
             SizedBox(height: Get.height * .05),
             Obx(
-              () => Center(
-                child: signupController.isLoading.value == true
-                    ? const CircularProgressIndicator()
-                    : RoundButton(
-                        myFocusNode: signupController.createAccButtonFocusNode,
-                        title: 'Create Account',
-                        onPressed: () {
-                          if (signupController.signupFormKey.currentState!.validate()) {
-                            signupController.userSignup();
-                          } else {
-                            print('Invalid data entered');
-                          }
-                        },
-                      ),
+              () => RoundButton(
+                isLoading: signupController.isLoading.value,
+                myFocusNode: signupController.createAccButtonFocusNode,
+                title: 'Create Account',
+                onPressed: () {
+                  signupController.setUserACL();
+                  // if (signupController.signupFormKey.currentState!.validate()) {
+                  //   signupController.userSignup(context);
+                  // }
+                },
               ),
             ),
             SizedBox(height: Get.height * .03),
@@ -79,7 +69,7 @@ class SignupFormWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Already have an account?'),
-                const SizedBox(width: 10),
+                10.width,
                 InkWell(
                   onTap: () {
                     Get.offNamed(RouteName.loginScreen);
