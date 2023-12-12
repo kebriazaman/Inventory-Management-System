@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:pos_fyp/res/app_color.dart';
 
 class RoundButton extends StatelessWidget {
@@ -8,6 +7,8 @@ class RoundButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isLoading,
+    this.width = 120.0,
+    this.height = 40.0,
     super.key,
   });
 
@@ -15,6 +16,8 @@ class RoundButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
   final bool? isLoading;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +25,16 @@ class RoundButton extends StatelessWidget {
       focusNode: myFocusNode,
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        fixedSize: Size(Get.width * 0.2, 48.0),
-        padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 20.0),
+        fixedSize: Size(width, height),
         backgroundColor: Colors.blueAccent,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(32.0)),
         ),
       ),
       child: isLoading == true
-          ? SizedBox(
-              height: 48.0,
-              width: 30.0,
-              child: const CircularProgressIndicator(color: AppColors.whiteColor, strokeWidth: 2))
-          : Text(title, style: const TextStyle(color: Colors.white)),
+          ? const SizedBox(
+              height: 20.0, width: 20.0, child: CircularProgressIndicator(color: AppColors.whiteColor, strokeWidth: 2))
+          : Text(title, style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.whiteColor)),
     );
   }
 }

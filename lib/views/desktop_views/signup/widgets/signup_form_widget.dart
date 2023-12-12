@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/signup_controller.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/components/dashboard/round_button.dart';
-import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
+import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
@@ -21,7 +21,7 @@ class SignupFormWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Create Account', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+            const Text('Create Account', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
             SizedBox(height: Get.height * .05),
             TextInputField(
               myController: signupController.emailController,
@@ -41,8 +41,8 @@ class SignupFormWidget extends StatelessWidget {
                   suffixIcon: IconButton(
                     onPressed: () => signupController.obscurePassword.value = !signupController.obscurePassword.value,
                     icon: signupController.obscurePassword.value == true
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
                   ),
                   hintText: 'Enter your Password',
                 ),
@@ -57,10 +57,10 @@ class SignupFormWidget extends StatelessWidget {
                 myFocusNode: signupController.createAccButtonFocusNode,
                 title: 'Create Account',
                 onPressed: () {
-                  signupController.setUserACL();
-                  // if (signupController.signupFormKey.currentState!.validate()) {
-                  //   signupController.userSignup(context);
-                  // }
+                  // signupController.setUserACL();
+                  if (signupController.signupFormKey.currentState!.validate()) {
+                    signupController.userSignup(context);
+                  }
                 },
               ),
             ),

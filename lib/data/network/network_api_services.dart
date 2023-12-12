@@ -9,7 +9,6 @@ class NetworkApiServices extends BaseApiService {
   @override
   Future getApi(String url) async {
     dynamic jsonResponse;
-
     try {
       // code for fetching data from the server.
       final response = await http.get(Uri.parse(url));

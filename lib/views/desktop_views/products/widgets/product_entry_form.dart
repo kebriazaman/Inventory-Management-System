@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/desktop/products/productsController.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/components/dashboard/custom_circular_progress_indicator.dart';
-import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
+import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/views/desktop_views/products/widgets/category_form.dart';
 
 class ProductsEntryForm extends StatelessWidget {
+  const ProductsEntryForm({super.key});
   @override
   Widget build(BuildContext context) {
     final productsController = Get.find<ProductsController>();
@@ -61,8 +62,8 @@ class ProductsEntryForm extends StatelessWidget {
                               items: productsController.categoryList.map<DropdownMenuItem<String>>(
                                 (e) {
                                   return DropdownMenuItem(
-                                    child: Text(e.name),
-                                    value: e.name,
+                                    value: e.name.toString(),
+                                    child: Text(e.name.toString()),
                                   );
                                 },
                               ).toList(),
@@ -79,7 +80,7 @@ class ProductsEntryForm extends StatelessWidget {
                     child: TextInputField(
                       myController: productsController.qtyController,
                       currentFocusNode: productsController.qtyFocusNode,
-                      nextFocusNode: productsController.salePriceFocusNode,
+                      nextFocusNode: productsController.purchasePriceFocusNode,
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
                           ? 'Enter the numeric value'
                           : null,
@@ -95,10 +96,10 @@ class ProductsEntryForm extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.salePriceController,
-                      currentFocusNode: productsController.salePriceFocusNode,
-                      nextFocusNode: productsController.purchasePriceFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
+                      myController: productsController.purchasePriceController,
+                      currentFocusNode: productsController.purchasePriceFocusNode,
+                      nextFocusNode: productsController.salePriceFocusNode,
+                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Purchase Price'),
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
                           ? 'Enter the numeric value'
                           : null,
@@ -107,8 +108,8 @@ class ProductsEntryForm extends StatelessWidget {
                   10.width,
                   Expanded(
                     child: TextInputField(
-                      myController: productsController.purchasePriceController,
-                      currentFocusNode: productsController.purchasePriceFocusNode,
+                      myController: productsController.salePriceController,
+                      currentFocusNode: productsController.salePriceFocusNode,
                       nextFocusNode: productsController.discountFocusNode,
                       textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
                       validator: (value) {
@@ -126,7 +127,7 @@ class ProductsEntryForm extends StatelessWidget {
                       myController: productsController.discountController,
                       currentFocusNode: productsController.discountFocusNode,
                       nextFocusNode: productsController.manufacturerFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Enter the discount%'),
+                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Discount%'),
                       validator: (value) => RegExp(r"^[^%]*$").hasMatch(value!) ? 'Enter the percentage value' : null,
                     ),
                   ),
@@ -173,7 +174,6 @@ class ProductsEntryForm extends StatelessWidget {
                           ? () {
                               if (productsController.entryFormKey.currentState!.validate()) {
                                 productsController.addProduct(context);
-                                productsController.getProducts();
                               }
                             }
                           : null,

@@ -123,11 +123,11 @@ class DashboardScreen extends StatelessWidget {
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    InfoCardWidget('Total Sales', 'Rs. 20000', ImageAssets.SALES_ICON_IMAGE,
+                                    InfoCardWidget('Total Sales', 20000, ImageAssets.SALES_ICON_IMAGE,
                                         AppColors.saleCardIconColor),
-                                    InfoCardWidget('Total Purchase', 'Rs. 49000', ImageAssets.PURCHASE_ICON_IMAGE,
+                                    InfoCardWidget('Total Purchase', 49000, ImageAssets.PURCHASE_ICON_IMAGE,
                                         AppColors.purchaseCardIconColor),
-                                    InfoCardWidget('Total Customers', 'Rs. 30000', ImageAssets.CUSTOMER_ICON_IMAGE,
+                                    InfoCardWidget('Total Customers', 30000, ImageAssets.CUSTOMER_ICON_IMAGE,
                                         AppColors.customerCardIconColor),
                                   ],
                                 ),

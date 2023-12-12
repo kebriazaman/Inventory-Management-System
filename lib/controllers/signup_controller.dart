@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/utils.dart';
 
 class SignupController extends GetxController {
@@ -22,15 +23,15 @@ class SignupController extends GetxController {
     String password = passwordController.text.trim();
     ParseUser user = ParseUser.createUser(email, password, email);
 
-    ParseACL parseACL = ParseACL();
-    parseACL.setPublicReadAccess(allowed: true);
-    parseACL.setPublicWriteAccess(allowed: true);
-    user.setACL(parseACL);
+    // ParseACL parseACL = ParseACL();
+    // parseACL.setPublicReadAccess(allowed: true);
+    // parseACL.setPublicWriteAccess(allowed: true);
+    // user.setACL(parseACL);
 
     ParseResponse apiResponse = await user.signUp();
     if (apiResponse.success && apiResponse.results != null) {
       isLoading.value = false;
-      // Get.offNamed(RouteName.desktopScreen);
+      Get.offNamed(RouteName.desktopScreen);
     } else {
       isLoading.value = false;
       Utils.showDialogueBox(context, 'Error', apiResponse.error!.message, Icon(Icons.cloud_off_rounded));

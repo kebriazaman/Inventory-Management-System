@@ -5,8 +5,8 @@ import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/components/mobile/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 
-class MobileSignupScreen extends StatelessWidget {
-  const MobileSignupScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final SignupController signupController = Get.put(SignupController());

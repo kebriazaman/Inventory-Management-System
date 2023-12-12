@@ -2,45 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/loginController.dart';
 import 'package:pos_fyp/res/app_color.dart';
-import 'package:pos_fyp/res/components/mobile/text_input_field.dart';
+import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
+import 'package:pos_fyp/utils/constants.dart';
+import 'package:pos_fyp/utils/extensions.dart';
 
-class MobileLoginScreen extends StatelessWidget {
-  const MobileLoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Form(
-              child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       textAlign: TextAlign.center,
-                      'Login',
-                      style: TextStyle(fontSize: 30),
+                      'Welcome Again',
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    SizedBox(height: Get.height * .04),
+                    10.height,
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Enter your email Id and password to login to your account',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    20.height,
                     TextInputField(
-                      myController: loginController.userNameController,
-                      myFocusNode: loginController.userNameFocusNode,
+                      myController: loginController.emailController,
+                      currentFocusNode: loginController.emailFocusNode,
                       nextFocusNode: loginController.passwordFocusNode,
-                      labelText: 'User name',
+                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(
+                          contentPadding: const EdgeInsets.all(16),
+                          labelText: '',
+                          hintText: 'Email',
+                          prefixIcon: const Icon(Icons.email_outlined)),
                     ),
-                    SizedBox(height: Get.height * .04),
-                    TextInputField(
-                      myController: loginController.passwordController,
-                      myFocusNode: loginController.passwordFocusNode,
-                      nextFocusNode: loginController.buttonFocusNode,
-                      labelText: 'Password',
+                    20.height,
+                    Obx(
+                      () => TextInputField(
+                        myController: loginController.passwordController,
+                        currentFocusNode: loginController.passwordFocusNode,
+                        nextFocusNode: loginController.buttonFocusNode,
+                        obscurePassword: loginController.obscurePassword.value,
+                        textFormFieldDecoration: kTextFormFieldDecoration.copyWith(
+                          hintText: 'Password',
+                          labelText: '',
+                          prefixIcon: const Icon(Icons.lock_reset_outlined),
+                          suffixIcon: IconButton(
+                            onPressed: () =>
+                                loginController.obscurePassword.value = !loginController.obscurePassword.value,
+                            icon: loginController.obscurePassword.value == true
+                                ? const Icon(Icons.visibility)
+                                : const Icon(Icons.visibility_off),
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: Get.height * .02),
+                    20.height,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

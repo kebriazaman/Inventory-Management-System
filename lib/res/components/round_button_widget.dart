@@ -6,8 +6,8 @@ class RoundButtonWidget extends StatefulWidget {
       {Key? key,
       required this.title,
       required this.isLoading,
-      this.width = 70,
-      this.height = 70,
+      this.width = 700,
+      this.height = 40,
       this.textColor = AppColors.buttonTextColor,
       this.backgroundColor = AppColors.buttonBackgroundColor,
       required this.onTap})
@@ -26,29 +26,28 @@ class RoundButtonWidget extends StatefulWidget {
 class _RoundButtonWidgetState extends State<RoundButtonWidget> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      hoverColor: AppColors.whiteColor,
-      splashColor: AppColors.whiteColor,
-      focusColor: AppColors.whiteColor,
-      highlightColor: AppColors.whiteColor,
-      onTap: widget.onTap,
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-            color: widget.backgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(color: AppColors.greyColor, blurRadius: 1),
-            ]),
-        child: widget.isLoading
-            ? const CircularProgressIndicator(color: AppColors.whiteColor)
-            : Center(
-                child: Text(widget.title,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: widget.textColor)),
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: InkWell(
+        hoverColor: AppColors.whiteColor,
+        splashColor: AppColors.whiteColor,
+        focusColor: AppColors.whiteColor,
+        highlightColor: AppColors.whiteColor,
+        onTap: widget.onTap,
+        child: Container(
+          width: widget.width,
+          height: widget.height,
+          decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+              boxShadow: const [BoxShadow(color: AppColors.greyColor, blurRadius: 1)]),
+          child: widget.isLoading
+              ? const CircularProgressIndicator(color: AppColors.whiteColor)
+              : Center(
+                  child: Text(widget.title,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(color: widget.textColor)),
+                ),
+        ),
       ),
     );
   }

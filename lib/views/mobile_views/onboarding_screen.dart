@@ -5,9 +5,8 @@ import 'package:pos_fyp/controllers/imageCarouselController.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/components/round_button_widget.dart';
 
-class OnbaordingScreen extends StatelessWidget {
-  const OnbaordingScreen({Key? key}) : super(key: key);
-
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final ImageCarouselController imageCarouselController = Get.put(ImageCarouselController());
@@ -62,9 +61,9 @@ class OnbaordingScreen extends StatelessWidget {
                           () => Container(
                             height: 4,
                             width: imageCarouselController.currentIndex.value == i ? 18 : 18,
-                            margin: EdgeInsets.symmetric(horizontal: 4.0),
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderRadius: const BorderRadius.all(Radius.circular(10)),
                               color: imageCarouselController.currentIndex.value == i ? Colors.blue : Colors.white,
                               shape: BoxShape.rectangle,
                               boxShadow: [
@@ -72,7 +71,7 @@ class OnbaordingScreen extends StatelessWidget {
                                   color: AppColors.lightGreyColor4,
                                   spreadRadius: 1,
                                   blurRadius: 4,
-                                  offset: Offset(1, 1),
+                                  offset: const Offset(1, 1),
                                 ),
                               ],
                             ),
@@ -81,28 +80,20 @@ class OnbaordingScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: Get.height * 0.08),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: RoundButtonWidget(
-                      title: 'Create new Account',
-                      isLoading: false,
-                      onTap: () {},
-                      backgroundColor: AppColors.appButtonColor,
-                      textColor: AppColors.whiteColor,
-                      height: 50,
-                    ),
+                  RoundButtonWidget(
+                    title: 'Create new Account',
+                    isLoading: false,
+                    onTap: () {},
+                    backgroundColor: AppColors.appButtonColor,
+                    textColor: AppColors.whiteColor,
                   ),
                   SizedBox(height: Get.height * 0.03),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: RoundButtonWidget(
-                      title: 'Login',
-                      isLoading: false,
-                      onTap: () {},
-                      backgroundColor: AppColors.whiteColor,
-                      textColor: AppColors.blackColor,
-                      height: 50,
-                    ),
+                  RoundButtonWidget(
+                    title: 'Login',
+                    isLoading: false,
+                    onTap: () {},
+                    backgroundColor: AppColors.whiteColor,
+                    textColor: AppColors.blackColor,
                   ),
                 ],
               ),
@@ -113,28 +104,3 @@ class OnbaordingScreen extends StatelessWidget {
     );
   }
 }
-
-// Padding(
-// padding: const EdgeInsets.all(16),
-// child: ElevatedButton(
-// onPressed: () => {},
-// child: Text('Create new Account'),
-// style: ElevatedButton.styleFrom(
-// padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.symmetric(horizontal: 16),
-// child: ElevatedButton(
-// onPressed: () => {},
-// child: Text(
-// 'Login',
-// style: TextStyle(color: Colors.black),
-// ),
-// style: ElevatedButton.styleFrom(
-// backgroundColor: Colors.grey.shade100,
-// padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-// ),
-// ),
-// ),

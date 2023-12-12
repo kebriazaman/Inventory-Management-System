@@ -11,6 +11,8 @@ class AppColors {
   static const Color addButtonColor = Colors.green;
   static const Color addButtonTextColor = Colors.white;
   static const Color cancelButtonColor = Colors.red;
+  static const Color blueColor = Colors.blue;
+
   static const Color cancelButtonTextColor = Colors.white;
   static const Color greyColor = Colors.grey;
   static const Color transparentColor = Colors.transparent;
@@ -26,6 +28,7 @@ class AppColors {
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color blackColor = Color(0xFF000000);
   static const Color redColor = Color(0xFFEE3B52);
+  static const Color greenColor = Color(0xFF398220);
 
   static const Color textFormFieldBorderColor = Colors.blue;
 

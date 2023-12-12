@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/loginController.dart';
+import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/components/dashboard/round_button.dart';
-import 'package:pos_fyp/res/components/dashboard/text_input_field.dart';
+import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
@@ -20,6 +21,7 @@ class LoginFormWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 64.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
                 textAlign: TextAlign.center,
@@ -28,8 +30,8 @@ class LoginFormWidget extends StatelessWidget {
               ),
               SizedBox(height: Get.height * 0.05),
               TextInputField(
-                myController: loginController.userNameController,
-                currentFocusNode: loginController.userNameFocusNode,
+                myController: loginController.emailController,
+                currentFocusNode: loginController.emailFocusNode,
                 nextFocusNode: loginController.passwordFocusNode,
                 textFormFieldDecoration: kLoginInputFieldDecoration,
                 validator: (value) => !GetUtils.isEmail(value!) ? 'Enter valid email' : null,
@@ -42,18 +44,32 @@ class LoginFormWidget extends StatelessWidget {
                   nextFocusNode: loginController.buttonFocusNode,
                   obscurePassword: loginController.obscurePassword.value,
                   textFormFieldDecoration: kLoginInputFieldDecoration.copyWith(
-                      labelText: 'Enter your password',
-                      suffixIcon: IconButton(
-                        onPressed: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
-                        icon: loginController.obscurePassword.value == true
-                            ? Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off),
-                      )),
+                    labelText: 'Enter your password',
+                    suffixIcon: IconButton(
+                      onPressed: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
+                      icon: loginController.obscurePassword.value == true
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
+                    ),
+                  ),
                   onTap: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
                   validator: (value) => GetUtils.isLengthLessThan(value, 8) ? 'Password is incorrect' : null,
                 ),
               ),
-              30.height,
+              20.height,
+              InkWell(
+                splashColor: AppColors.transparentColor,
+                hoverColor: AppColors.transparentColor,
+                onTap: () => Get.toNamed(RouteName.forgotPasswordScreen),
+                child: Text(
+                    textAlign: TextAlign.right,
+                    'Forgot Password',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: AppColors.redColor, decoration: TextDecoration.underline)),
+              ),
+              20.height,
               Obx(
                 () => RoundButton(
                   isLoading: loginController.isLoading.value,

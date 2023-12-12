@@ -14,15 +14,50 @@ class DesktopScreen extends StatelessWidget {
             // --------------------- Drawer Section ----------------------
             Expanded(
               flex: 1,
-              child: Container(
-                alignment: Alignment.center,
-                width: Get.width,
-                height: Get.height,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: _buildSideSelectionBoxes(context),
-                  ),
-                ),
+              child: ListView.builder(
+                itemCount: _navigationController.iconsList.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 52.0),
+                    child: Card(
+                      child: InkWell(
+                        onTap: () {
+                          _navigationController.selectedIndex.value = index;
+                          FocusScope.of(context)
+                              .requestFocus(_navigationController.sideSelectionBoxFocusNodeList[index]);
+                        },
+                        onFocusChange: (v) {
+                          if (v) {
+                            _navigationController.selectedIndex.value = index;
+                          }
+                        },
+                        autofocus: index == 0 ? true : false,
+                        focusNode: _navigationController.sideSelectionBoxFocusNodeList[index],
+                        hoverColor: Colors.blue.shade100,
+                        focusColor: Colors.blue.shade100,
+                        child: SizedBox(
+                          width: Get.width * 0.1,
+                          height: Get.height * 0.1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(_navigationController.iconsList[index]),
+                                Expanded(
+                                  child: Text(
+                                    _navigationController.titlesList[index],
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             const Padding(
@@ -40,57 +75,5 @@ class DesktopScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<Widget> _buildSideSelectionBoxes(BuildContext context) {
-    List<Widget> _list = [];
-    int length = _navigationController.sideSelectionBoxTitleList.length;
-    String _title;
-    IconData _icon;
-    FocusNode _focusNode;
-    for (int i = 0; i < length; i++) {
-      _title = _navigationController.sideSelectionBoxTitleList[i];
-      _icon = _navigationController.sideSelectionBoxIconList[i];
-      _focusNode = _navigationController.sideSelectionBoxFocusNodeList[i];
-      _list.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 44.0),
-          child: Card(
-            elevation: 5,
-            child: InkWell(
-              onTap: () {
-                _navigationController.selectedIndex.value = i;
-                FocusScope.of(context).requestFocus(_navigationController.sideSelectionBoxFocusNodeList[i]);
-              },
-              onFocusChange: (v) {
-                if (v) {
-                  _navigationController.selectedIndex.value = i;
-                }
-              },
-              autofocus: i == 0 ? true : false,
-              focusNode: _navigationController.sideSelectionBoxFocusNodeList[i],
-              hoverColor: Colors.blue.shade100,
-              focusColor: Colors.blue.shade100,
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                constraints: BoxConstraints(
-                  minHeight: 50,
-                  maxHeight: 70,
-                  minWidth: Get.width * .1,
-                  maxWidth: Get.width * .1,
-                ),
-                child: Column(
-                  children: [
-                    Expanded(child: Icon(_icon)),
-                    Text(_title),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-    return _list;
   }
 }

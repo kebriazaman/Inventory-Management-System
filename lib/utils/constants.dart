@@ -3,6 +3,7 @@ import 'package:pos_fyp/res/app_color.dart';
 
 const kTextFormFieldDecoration = InputDecoration(
   labelText: 'Product Code',
+  labelStyle: TextStyle(color: Colors.black, fontSize: 14.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10)),
     borderSide: BorderSide(color: AppColors.blackColor),
@@ -14,6 +15,7 @@ const kTextFormFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(16)),
     borderSide: BorderSide(color: AppColors.textFormFieldBorderColor),
   ),
+  contentPadding: EdgeInsets.all(16.0),
 );
 
 const kLoginInputFieldDecoration = InputDecoration(
@@ -38,10 +40,10 @@ const kDropdownFormFieldDecoration = InputDecoration(
   hintText: 'Select Category',
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-    borderSide: const BorderSide(color: AppColors.primaryColor),
+    borderSide: BorderSide(color: AppColors.primaryColor),
   ),
   enabledBorder: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-    borderSide: const BorderSide(color: AppColors.primaryColor),
+    borderSide: BorderSide(color: AppColors.primaryColor),
   ),
 );

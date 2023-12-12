@@ -21,7 +21,7 @@ class NavigationController extends GetxController {
   FocusNode screenSelectionNode_6 = FocusNode();
   FocusNode screenSelectionNode_7 = FocusNode();
 
-  List<String> get sideSelectionBoxTitleList {
+  List<String> get titlesList {
     return [
       'Dashboard',
       'Products',
@@ -33,7 +33,7 @@ class NavigationController extends GetxController {
     ];
   }
 
-  List<IconData> get sideSelectionBoxIconList {
+  List<IconData> get iconsList {
     return [
       Icons.dashboard,
       Icons.production_quantity_limits,

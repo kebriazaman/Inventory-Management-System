@@ -14,7 +14,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   http: ^0.13.5
@@ -22,6 +21,8 @@ dependencies:
   parse_server_sdk_flutter: ^6.0.0
   carousel_slider: ^4.2.1
   syncfusion_flutter_datagrid: ^22.2.8
+  smooth_page_indicator: ^1.1.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

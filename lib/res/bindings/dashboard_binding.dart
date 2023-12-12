@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pos_fyp/views/mobile_views/mob_dashbaord_screen.dart';
+import 'package:pos_fyp/views/mobile_views/dashbaord_screen.dart';
 
 class DashbaordBinding extends Bindings {
   @override

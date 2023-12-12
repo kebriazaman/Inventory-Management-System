@@ -4,14 +4,19 @@ import 'package:pos_fyp/res/app_color.dart';
 
 class InputSearchField extends StatelessWidget {
   InputSearchField({
+    required this.onTextChanged,
     super.key,
   });
+
+  Function(String) onTextChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: Get.width * 0.3,
+      height: 48,
       child: TextFormField(
+        onChanged: onTextChanged,
         cursorColor: AppColors.blackColor,
         maxLines: 1,
         decoration: InputDecoration(
@@ -23,6 +28,7 @@ class InputSearchField extends StatelessWidget {
             Icons.search,
             color: AppColors.blackColor,
           ),
+          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Colors.black),

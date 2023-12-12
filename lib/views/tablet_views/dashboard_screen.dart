@@ -5,8 +5,8 @@ import 'package:pos_fyp/res/components/dashboard/info_card_widget.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/utils/wave_painter.dart';
 
-class TabDesktopScreen extends StatelessWidget {
-  const TabDesktopScreen({Key? key}) : super(key: key);
+class DashbaordScreen extends StatelessWidget {
+  const DashbaordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +24,11 @@ class TabDesktopScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InfoCardWidget('Total Sales', '1000', ImageAssets.SALES_ICON_IMAGE, AppColors.saleCardIconColor),
+                    InfoCardWidget('Total Sales', 1000, ImageAssets.SALES_ICON_IMAGE, AppColors.saleCardIconColor),
                     InfoCardWidget(
-                        'Total Purchase', '1000', ImageAssets.PURCHASE_ICON_IMAGE, AppColors.purchaseCardIconColor),
+                        'Total Purchase', 1000, ImageAssets.PURCHASE_ICON_IMAGE, AppColors.purchaseCardIconColor),
                     InfoCardWidget(
-                        'Total Customers', '1000', ImageAssets.CUSTOMER_ICON_IMAGE, AppColors.customerCardIconColor),
+                        'Total Customers', 1000, ImageAssets.CUSTOMER_ICON_IMAGE, AppColors.customerCardIconColor),
                   ],
                 ),
                 SizedBox(height: 40.0),

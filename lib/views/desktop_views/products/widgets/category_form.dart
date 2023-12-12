@@ -51,7 +51,6 @@ class CategoryForm extends StatelessWidget {
                           ? () {
                               if (productsController.categoryFormKey.currentState!.validate()) {
                                 productsController.addCategory(context);
-                                productsController.getCategoryList();
                               }
                             }
                           : null,

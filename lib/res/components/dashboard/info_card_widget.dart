@@ -3,22 +3,23 @@ import 'package:pos_fyp/res/app_color.dart';
 
 class InfoCardWidget extends StatelessWidget {
   const InfoCardWidget(this.title, this.value, this.imageIconPath, this.iconBackgroundColor, {super.key});
-
   final String title;
-  final String value;
+  final int value;
   final Color iconBackgroundColor;
   final String imageIconPath;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Card(
+        surfaceTintColor: AppColors.whiteColor,
+        elevation: 4,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title,
@@ -28,10 +29,10 @@ class InfoCardWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    value,
+                    value.toString(),
                     style: const TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],

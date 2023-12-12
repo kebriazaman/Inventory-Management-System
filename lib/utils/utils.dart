@@ -24,11 +24,11 @@ class Utils {
 
   static List<Offset> generatePoints(BuildContext context) {
     final points = <Offset>[];
-    final double waveHeight = 30.0;
+    const double waveHeight = 20.0;
     for (int i = 0; i <= Get.width.toInt() + 2; i++) {
       double radian = (i / Get.width) * math.pi * 9;
       double dx = i.toDouble();
-      double dy = math.sin(radian) * waveHeight + Get.height / 5;
+      double dy = math.sin(radian) * waveHeight + Get.height / 9;
       points.add(Offset(dx, dy));
     }
     return points;
