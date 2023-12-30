@@ -60,18 +60,12 @@ class NavigationController extends GetxController {
   List<Widget> get screenList {
     return [
       DashboardScreen(),
-      ProductsScreen(),
-      SalesScreen(),
-      PurchaseScreen(),
-      CustomersScreen(),
-      ReportsScreen(),
-      SettingsScreen(),
+      const ProductsScreen(),
+      const SalesScreen(),
+      const PurchaseScreen(),
+      const CustomersScreen(),
+      const ReportsScreen(),
+      const SettingsScreen(),
     ].obs;
-  }
-
-  List<Widget> get mobileScreenList {
-    return [
-      DashboardScreen(),
-    ];
   }
 }

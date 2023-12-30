@@ -27,6 +27,7 @@ class SignupFormWidget extends StatelessWidget {
               myController: signupController.emailController,
               currentFocusNode: signupController.emailFocusNode,
               nextFocusNode: signupController.passwordFocusNode,
+              keyboardType: TextInputType.emailAddress,
               textFormFieldDecoration: kSignupInputFieldDecoration,
               validator: (v) => !GetUtils.isEmail(v!) ? 'Enter valid email' : null,
             ),
@@ -37,6 +38,7 @@ class SignupFormWidget extends StatelessWidget {
                 myController: signupController.passwordController,
                 currentFocusNode: signupController.passwordFocusNode,
                 nextFocusNode: signupController.createAccButtonFocusNode,
+                keyboardType: TextInputType.visiblePassword,
                 textFormFieldDecoration: kSignupInputFieldDecoration.copyWith(
                   suffixIcon: IconButton(
                     onPressed: () => signupController.obscurePassword.value = !signupController.obscurePassword.value,
@@ -59,7 +61,7 @@ class SignupFormWidget extends StatelessWidget {
                 onPressed: () {
                   // signupController.setUserACL();
                   if (signupController.signupFormKey.currentState!.validate()) {
-                    signupController.userSignup(context);
+                    signupController.createAccount();
                   }
                 },
               ),

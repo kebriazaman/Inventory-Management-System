@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/assets/image_assets.dart';
-import 'package:pos_fyp/res/components/dashboard/info_card_widget.dart';
+import 'package:pos_fyp/res/components/info_card.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/utils/wave_painter.dart';
 
@@ -24,11 +24,9 @@ class DashbaordScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    InfoCardWidget('Total Sales', 1000, ImageAssets.SALES_ICON_IMAGE, AppColors.saleCardIconColor),
-                    InfoCardWidget(
-                        'Total Purchase', 1000, ImageAssets.PURCHASE_ICON_IMAGE, AppColors.purchaseCardIconColor),
-                    InfoCardWidget(
-                        'Total Customers', 1000, ImageAssets.CUSTOMER_ICON_IMAGE, AppColors.customerCardIconColor),
+                    InfoCard('Total Sales', 1000, ImageAssets.SALES_ICON_IMAGE, AppColors.saleCardIconColor),
+                    InfoCard('Total Purchase', 1000, ImageAssets.PURCHASE_ICON_IMAGE, AppColors.purchaseCardIconColor),
+                    InfoCard('Total Customers', 1000, ImageAssets.CUSTOMER_ICON_IMAGE, AppColors.customerCardIconColor),
                   ],
                 ),
                 SizedBox(height: 40.0),

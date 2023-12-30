@@ -1,13 +1,13 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class AppExceptions implements ParseException {
-  final _message;
+  final _code;
   final _prefix;
 
-  AppExceptions([this._message, this._prefix]);
+  AppExceptions([this._code, this._prefix]);
 
   String toString() {
-    return '$_prefix, $_message';
+    return '$_prefix, $_code';
   }
 }
 

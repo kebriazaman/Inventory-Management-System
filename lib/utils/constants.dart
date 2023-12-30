@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_fyp/res/app_color.dart';
 
 const kTextFormFieldDecoration = InputDecoration(
-  labelText: 'Product Code',
-  labelStyle: TextStyle(color: Colors.black, fontSize: 14.0),
+  labelText: 'Product Name',
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10)),
     borderSide: BorderSide(color: AppColors.blackColor),
@@ -23,9 +22,7 @@ const kLoginInputFieldDecoration = InputDecoration(
   focusedBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: AppColors.blackColor),
   ),
-  contentPadding: EdgeInsets.symmetric(horizontal: 4),
-  labelText: 'Enter your email or user name',
-  labelStyle: TextStyle(color: AppColors.blackColor, fontSize: 14),
+  contentPadding: EdgeInsets.all(16),
 );
 
 const kSignupInputFieldDecoration = InputDecoration(
@@ -46,4 +43,9 @@ const kDropdownFormFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(10.0)),
     borderSide: BorderSide(color: AppColors.primaryColor),
   ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(color: AppColors.primaryColor),
+  ),
+  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
 );

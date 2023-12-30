@@ -22,7 +22,7 @@ class InputSearchField extends StatelessWidget {
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          hintText: 'Search',
+          hintText: 'Search product by name',
           hintStyle: const TextStyle(color: AppColors.blackColor),
           prefixIcon: const Icon(
             Icons.search,

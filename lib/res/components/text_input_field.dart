@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pos_fyp/res/app_color.dart';
-import 'package:pos_fyp/utils/utils.dart';
 
 class TextInputField extends StatelessWidget {
   TextInputField({
     required this.myController,
     required this.currentFocusNode,
     required this.nextFocusNode,
+    required this.keyboardType,
     this.obscurePassword = false,
     this.suffixIcon,
     this.onTap,
@@ -23,7 +23,7 @@ class TextInputField extends StatelessWidget {
   final VoidCallback? onTap;
   String? Function(String?)? validator;
   InputDecoration? textFormFieldDecoration;
-
+  TextInputType keyboardType;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -31,10 +31,10 @@ class TextInputField extends StatelessWidget {
       obscureText: obscurePassword,
       controller: myController,
       focusNode: currentFocusNode,
+      keyboardType: keyboardType,
       cursorColor: AppColors.blackColor,
       decoration: textFormFieldDecoration,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onFieldSubmitted: (value) => Utils.fieldFocusChange(context, currentFocusNode, nextFocusNode),
       validator: validator,
     );
   }

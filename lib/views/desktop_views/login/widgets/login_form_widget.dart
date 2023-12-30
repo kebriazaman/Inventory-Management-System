@@ -33,6 +33,7 @@ class LoginFormWidget extends StatelessWidget {
                 myController: loginController.emailController,
                 currentFocusNode: loginController.emailFocusNode,
                 nextFocusNode: loginController.passwordFocusNode,
+                keyboardType: TextInputType.emailAddress,
                 textFormFieldDecoration: kLoginInputFieldDecoration,
                 validator: (value) => !GetUtils.isEmail(value!) ? 'Enter valid email' : null,
               ),
@@ -43,6 +44,7 @@ class LoginFormWidget extends StatelessWidget {
                   currentFocusNode: loginController.passwordFocusNode,
                   nextFocusNode: loginController.buttonFocusNode,
                   obscurePassword: loginController.obscurePassword.value,
+                  keyboardType: TextInputType.visiblePassword,
                   textFormFieldDecoration: kLoginInputFieldDecoration.copyWith(
                     labelText: 'Enter your password',
                     suffixIcon: IconButton(
@@ -60,6 +62,7 @@ class LoginFormWidget extends StatelessWidget {
               InkWell(
                 splashColor: AppColors.transparentColor,
                 hoverColor: AppColors.transparentColor,
+                highlightColor: AppColors.transparentColor,
                 onTap: () => Get.toNamed(RouteName.forgotPasswordScreen),
                 child: Text(
                     textAlign: TextAlign.right,
@@ -77,7 +80,7 @@ class LoginFormWidget extends StatelessWidget {
                   title: 'LOG IN',
                   onPressed: () {
                     if (loginController.loginFormKey.currentState!.validate()) {
-                      loginController.userLogin(context);
+                      loginController.userLogin();
                     }
                   },
                 ),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/signup_controller.dart';
 import 'package:pos_fyp/res/app_color.dart';
-import 'package:pos_fyp/res/components/mobile/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
+import 'package:pos_fyp/utils/constants.dart';
+import 'package:pos_fyp/utils/utils.dart';
+import 'package:pos_fyp/views/mobile_views/signup/widgets/signup_rounded_button.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -16,67 +18,96 @@ class SignupScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Form(
+              key: signupController.signupFormKey,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       textAlign: TextAlign.center,
-                      'Create an account',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    SizedBox(height: Get.height * .04),
-                    TextInputField(
-                      myController: signupController.emailController,
-                      myFocusNode: signupController.emailFocusNode,
-                      nextFocusNode: signupController.passwordFocusNode,
-                      labelText: 'Email',
-                      validator: (v) {
-                        if (!GetUtils.isEmail(v.toString())) {
-                          return 'Invalid email address';
-                        }
-                      },
-                    ),
-                    SizedBox(height: Get.height * .04),
-                    TextInputField(
-                      myController: signupController.passwordController,
-                      myFocusNode: signupController.passwordFocusNode,
-                      nextFocusNode: signupController.createAccButtonFocusNode,
-                      labelText: 'Password',
-                      validator: (v) {
-                        if (GetUtils.isLengthLessOrEqual(v.toString(), 4)) {
-                          return 'Password length must be greater than 4 characters';
-                        }
-                      },
-                    ),
-                    SizedBox(height: Get.height * .02),
-                    TextButton(
-                      focusNode: signupController.createAccButtonFocusNode,
-                      onPressed: () {
-                        print('pressed');
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: AppColors.appButtonColor,
-                      ),
-                      child: const Text('Create', style: TextStyle(color: AppColors.whiteColor)),
+                      'Create Account,',
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w700),
                     ),
                     SizedBox(height: Get.height * .01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Already have an account?'),
-                        TextButton(
-                          onPressed: () {
-                            Get.offNamed(RouteName.loginScreen);
-                          },
-                          style: TextButton.styleFrom(
-                            splashFactory: NoSplash.splashFactory,
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Register with valid email address!',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w600, color: AppColors.blackColor.withOpacity(0.5)),
+                    ),
+                    SizedBox(height: Get.height * .04),
+                    TextFormField(
+                      controller: signupController.emailController,
+                      focusNode: signupController.emailFocusNode,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: kSignupInputFieldDecoration.copyWith(
+                          hintText: 'Email', prefixIcon: const Icon(Icons.email_outlined)),
+                      onFieldSubmitted: (_) => Utils.fieldFocusChange(
+                          context, signupController.emailFocusNode, signupController.passwordFocusNode),
+                      textInputAction: TextInputAction.next,
+                      validator: (v) => !GetUtils.isEmail(v.toString()) ? 'Please enter valid email' : null,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    ),
+                    SizedBox(height: Get.height * .04),
+                    Obx(
+                      () => TextFormField(
+                        obscureText: signupController.obscurePassword.value,
+                        controller: signupController.passwordController,
+                        focusNode: signupController.passwordFocusNode,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: kSignupInputFieldDecoration.copyWith(
+                          hintText: 'Password',
+                          prefixIcon: const Icon(Icons.lock_reset),
+                          suffixIcon: IconButton(
+                            onPressed: () =>
+                                signupController.obscurePassword.value = !signupController.obscurePassword.value,
+                            icon: signupController.obscurePassword.value
+                                ? const Icon(Icons.visibility, color: AppColors.blackColor, size: 20)
+                                : const Icon(Icons.visibility_off, color: AppColors.blackColor, size: 20),
                           ),
-                          child: const Text('Login', style: TextStyle(color: AppColors.blackColor)),
                         ),
-                      ],
+                        onFieldSubmitted: (_) => Utils.fieldFocusChange(
+                            context, signupController.passwordFocusNode, signupController.createAccButtonFocusNode),
+                        validator: (v) => GetUtils.isLengthLessThan(v.toString(), 8)
+                            ? 'Password must be at least 8 characters long'
+                            : null,
+                        textInputAction: TextInputAction.next,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                      ),
+                    ),
+                    SizedBox(height: Get.height * .03),
+                    Obx(
+                      () => SignupRoundedButton(
+                          title: 'Register',
+                          focusNode: signupController.createAccButtonFocusNode,
+                          onPress: () {
+                            if (signupController.signupFormKey.currentState!.validate()) {
+                              signupController.createAccount();
+                            }
+                          },
+                          isLoading: signupController.isLoading.value),
+                    ),
+                    SizedBox(height: Get.height * .02),
+                    InkWell(
+                      onTap: () => Get.offNamed(RouteName.loginScreen),
+                      child: Center(
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'I\'m already a member, ',
+                            children: [
+                              TextSpan(
+                                  text: 'Login',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(decoration: TextDecoration.underline, fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

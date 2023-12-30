@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/desktop/products/productsController.dart';
 import 'package:pos_fyp/res/app_color.dart';
+import 'package:pos_fyp/res/components/custom_progress_indicator.dart';
 import 'package:pos_fyp/utils/constants.dart';
 
 class CategoryForm extends StatelessWidget {
@@ -46,25 +47,21 @@ class CategoryForm extends StatelessWidget {
                   const SizedBox(width: 10),
                   Obx(
                     () => ElevatedButton(
-                      focusNode: productsController.addCatBtnFocusNode,
-                      onPressed: productsController.isCategoryLoading.value == false
-                          ? () {
-                              if (productsController.categoryFormKey.currentState!.validate()) {
-                                productsController.addCategory(context);
-                              }
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.addButtonColor,
-                        fixedSize: const Size(100, 50),
-                      ),
-                      child: productsController.isCategoryLoading.value == false
-                          ? const Text('Add', style: TextStyle(color: AppColors.addButtonTextColor))
-                          : const Padding(
-                              padding: EdgeInsets.all(14.0),
-                              child: CircularProgressIndicator(color: AppColors.whiteColor, strokeWidth: 2),
-                            ),
-                    ),
+                        focusNode: productsController.addCatBtnFocusNode,
+                        onPressed: productsController.isCategoryLoading.value
+                            ? null
+                            : () {
+                                if (productsController.categoryFormKey.currentState!.validate()) {
+                                  productsController.addCategory(context);
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.addButtonColor,
+                          fixedSize: const Size(100, 50),
+                        ),
+                        child: productsController.isCategoryLoading.value
+                            ? CustomProgressIndicator(width: 20, height: 20, color: AppColors.whiteColor)
+                            : const Text('Add', style: TextStyle(color: AppColors.addButtonTextColor))),
                   ),
                 ],
               ),

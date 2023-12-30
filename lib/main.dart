@@ -9,8 +9,6 @@ import 'package:pos_fyp/utils/back4app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Back4App.initParse();
-  final controller = Get.put(LoginController());
-  controller.initUser();
   runApp(const MyApp());
 }
 
@@ -21,9 +19,11 @@ class MyApp extends StatelessWidget {
     final LoginController loginController = Get.put(LoginController());
     return GetMaterialApp(
       themeMode: ThemeMode.system,
-      theme: ThemeData(scaffoldBackgroundColor: AppColors.whiteColor),
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.whiteColor,
+      ),
       debugShowCheckedModeBanner: false,
-      initialRoute: loginController.parseUser == null ? RouteName.loginScreen : RouteName.desktopScreen,
+      initialRoute: loginController.isFirstSeen.value ? RouteName.loginScreen : RouteName.onboardingScreen,
       getPages: AppRoutes.appRoutes(context),
     );
   }

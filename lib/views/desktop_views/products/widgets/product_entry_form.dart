@@ -1,9 +1,10 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/desktop/products/productsController.dart';
+import 'package:pos_fyp/models/category_model.dart';
+import 'package:pos_fyp/models/products/products_model.dart';
 import 'package:pos_fyp/res/app_color.dart';
-import 'package:pos_fyp/res/components/dashboard/custom_circular_progress_indicator.dart';
-import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
 import 'package:pos_fyp/utils/utils.dart';
@@ -16,7 +17,7 @@ class ProductsEntryForm extends StatelessWidget {
     final productsController = Get.find<ProductsController>();
     return SizedBox(
       width: Get.width * 0.6,
-      height: Get.height * 0.6,
+      height: Get.height * 0.45,
       child: Form(
         key: productsController.entryFormKey,
         child: Padding(
@@ -27,66 +28,68 @@ class ProductsEntryForm extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: TextInputField(
-                      myController: productsController.nameController,
-                      currentFocusNode: productsController.nameFocusNode,
-                      nextFocusNode: productsController.categoryFocusNode,
-                      validator: (value) => GetUtils.isNull(value) || GetUtils.isLengthLessOrEqual(value, 3)
-                          ? 'Invalid name entered'
-                          : null,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Product Name'),
-                    ),
-                  ),
-                  10.width,
-                  Obx(
-                    () => Expanded(
-                      child: productsController.isCategoryLoading.value == true
-                          ? CustomCircularProgressIndicator()
-                          : DropdownButtonFormField(
-                              value: productsController.catInitValue.value,
-                              focusNode: productsController.categoryFocusNode,
-                              dropdownColor: AppColors.dropDownColor,
-                              validator: (v) => v == 'Select' || v == null ? 'Invalid item selected' : null,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              decoration: kDropdownFormFieldDecoration.copyWith(
-                                prefixIcon: InkWell(
-                                  onTap: () {
-                                    Get.defaultDialog(
-                                      title: 'Add Category',
-                                      content: const CategoryForm(),
-                                    );
-                                  },
-                                  child: const Icon(Icons.add),
-                                ),
-                              ),
-                              items: productsController.categoryList.map<DropdownMenuItem<String>>(
-                                (e) {
-                                  return DropdownMenuItem(
-                                    value: e.name.toString(),
-                                    child: Text(e.name.toString()),
-                                  );
-                                },
-                              ).toList(),
-                              onChanged: (v) {
-                                productsController.setCategory = v.toString();
-                                Utils.fieldFocusChange(
-                                    context, productsController.categoryFocusNode, productsController.qtyFocusNode);
-                              },
-                            ),
+                    child: TextFormField(
+                      controller: productsController.nameController,
+                      focusNode: productsController.nameFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.text,
+                      decoration: kTextFormFieldDecoration,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) =>
+                          GetUtils.isNull(value) || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.nameFocusNode, productsController.qtyFocusNode),
                     ),
                   ),
                   10.width,
                   Expanded(
-                    child: TextInputField(
-                      myController: productsController.qtyController,
-                      currentFocusNode: productsController.qtyFocusNode,
-                      nextFocusNode: productsController.purchasePriceFocusNode,
+                    child: DropdownSearch<CategoryModel>(
+                        asyncItems: (String filter) async {
+                          await productsController.fetchCategories();
+                          return productsController.categoryList;
+                        },
+                        popupProps: PopupProps.menu(
+                          searchFieldProps: TextFieldProps(
+                              autofocus: true, decoration: kLoginInputFieldDecoration.copyWith(hintText: 'Search')),
+                          showSearchBox: true,
+                        ),
+                        filterFn: (category, filter) => category.name!.toLowerCase().contains(filter.toLowerCase()),
+                        clearButtonProps: const ClearButtonProps(
+                            color: AppColors.blackColor, isVisible: true, icon: Icon(Icons.clear, size: 16.0)),
+                        itemAsString: (category) => category.name.toString(),
+                        dropdownBuilder: (context, selectedItem) {
+                          return Text(selectedItem?.name ?? 'Search',
+                              style: const TextStyle(color: AppColors.blueColor));
+                        },
+                        validator: (item) =>
+                            GetUtils.isNull(item?.name) || item?.name == 'Select' ? 'Invalid item selected' : null,
+                        autoValidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (CategoryModel? category) {
+                          productsController.setFormCategory(category!.name.toString());
+                          Utils.fieldFocusChange(
+                              context, productsController.categoryFocusNode, productsController.qtyFocusNode);
+                        },
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownSearchDecoration: kDropdownFormFieldDecoration.copyWith(
+                          prefixIcon: IconButton(
+                              onPressed: () => Get.defaultDialog(title: 'Add Category', content: const CategoryForm()),
+                              icon: const Icon(Icons.add)),
+                        ))),
+                  ),
+                  10.width,
+                  Expanded(
+                    child: TextFormField(
+                      controller: productsController.qtyController,
+                      focusNode: productsController.qtyFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      decoration: kTextFormFieldDecoration.copyWith(labelText: 'Quantity'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
                           ? 'Enter the numeric value'
                           : null,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(
-                        labelText: 'Quantity',
-                      ),
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.qtyFocusNode, productsController.purchasePriceFocusNode),
                     ),
                   ),
                 ],
@@ -95,101 +98,70 @@ class ProductsEntryForm extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: TextInputField(
-                      myController: productsController.purchasePriceController,
-                      currentFocusNode: productsController.purchasePriceFocusNode,
-                      nextFocusNode: productsController.salePriceFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Purchase Price'),
-                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
+                    child: TextFormField(
+                      controller: productsController.purchasePriceController,
+                      focusNode: productsController.purchasePriceFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      decoration: kTextFormFieldDecoration.copyWith(labelText: 'Purchase Price'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || !GetUtils.isNum(value!)
                           ? 'Enter the numeric value'
                           : null,
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.purchasePriceFocusNode, productsController.salePriceFocusNode),
                     ),
                   ),
                   10.width,
                   Expanded(
-                    child: TextInputField(
-                      myController: productsController.salePriceController,
-                      currentFocusNode: productsController.salePriceFocusNode,
-                      nextFocusNode: productsController.discountFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
-                      validator: (value) {
-                        if (GetUtils.isLengthLessThan(value, productsController.purchasePriceController.text.length)) {
-                          return 'Purchase price is less than sale price';
-                        } else if (!GetUtils.isNumericOnly(value!)) {
-                          return 'Enter numeric value';
-                        }
-                      },
-                    ),
-                  ),
-                  10.width,
-                  Expanded(
-                    child: TextInputField(
-                      myController: productsController.discountController,
-                      currentFocusNode: productsController.discountFocusNode,
-                      nextFocusNode: productsController.manufacturerFocusNode,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Discount%'),
-                      validator: (value) => RegExp(r"^[^%]*$").hasMatch(value!) ? 'Enter the percentage value' : null,
-                    ),
-                  ),
-                ],
-              ),
-              20.height,
-              Row(
-                children: [
-                  Expanded(
-                    child: TextInputField(
-                      myController: productsController.manufacturerController,
-                      currentFocusNode: productsController.manufacturerFocusNode,
-                      nextFocusNode: productsController.addButtonFocusNode,
-                      validator: (value) => GetUtils.isNum(value!) || !GetUtils.isLengthGreaterOrEqual(value, 4)
-                          ? 'Invalid name entered'
-                          : null,
-                      textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Manufacturer'),
-                    ),
-                  ),
-                ],
-              ),
-              20.height,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.cancelButtonColor,
-                      fixedSize: const Size(100, 50),
-                    ),
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(color: AppColors.cancelButtonTextColor),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Obx(
-                    () => ElevatedButton(
-                      focusNode: productsController.addButtonFocusNode,
-                      onPressed: productsController.isProductLoading.value == false
-                          ? () {
-                              if (productsController.entryFormKey.currentState!.validate()) {
-                                productsController.addProduct(context);
-                              }
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.addButtonColor,
-                        fixedSize: const Size(100, 50),
+                    child: TextFormField(
+                      controller: productsController.salePriceController,
+                      focusNode: productsController.salePriceFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      decoration: kTextFormFieldDecoration.copyWith(labelText: 'Sale Price'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => ProductsModel.isSalePriceValid(
+                        productsController.purchasePriceController.text.trim(),
+                        productsController.salePriceController.text.trim(),
                       ),
-                      child: productsController.isProductLoading.value == false
-                          ? const Text('Add', style: TextStyle(color: AppColors.addButtonTextColor))
-                          : const Padding(
-                              padding: EdgeInsets.all(14.0),
-                              child: CircularProgressIndicator(
-                                color: AppColors.whiteColor,
-                                strokeWidth: 2,
-                              ),
-                            ),
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.salePriceFocusNode, productsController.discountFocusNode),
+                    ),
+                  ),
+                  10.width,
+                  Expanded(
+                    child: TextFormField(
+                      controller: productsController.discountController,
+                      focusNode: productsController.discountFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      decoration: kTextFormFieldDecoration.copyWith(labelText: 'Discount %'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => GetUtils.isAlphabetOnly(value!) ? 'Enter valid discount %' : null,
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.discountFocusNode, productsController.manufacturerFocusNode),
+                    ),
+                  ),
+                ],
+              ),
+              20.height,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: productsController.manufacturerController,
+                      focusNode: productsController.manufacturerFocusNode,
+                      cursorColor: AppColors.blackColor,
+                      keyboardType: TextInputType.number,
+                      decoration: kTextFormFieldDecoration.copyWith(labelText: 'Manufacturer'),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) =>
+                          GetUtils.isNull(value) || GetUtils.isNull(value) || GetUtils.isLengthLessThan(value, 3)
+                              ? 'Invalid name entered'
+                              : null,
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
+                          context, productsController.manufacturerFocusNode, productsController.addButtonFocusNode),
                     ),
                   ),
                 ],

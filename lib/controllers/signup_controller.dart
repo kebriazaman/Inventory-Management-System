@@ -5,7 +5,7 @@ import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/utils.dart';
 
 class SignupController extends GetxController {
-  var isLoading = false.obs;
+  final RxBool _isLoading = false.obs;
   final signupFormKey = GlobalKey<FormState>();
   var obscurePassword = true.obs;
 
@@ -16,8 +16,12 @@ class SignupController extends GetxController {
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode createAccButtonFocusNode = FocusNode();
 
-  void userSignup(BuildContext context) async {
-    isLoading.value = true;
+  RxBool get isLoading => _isLoading;
+
+  setLoading(bool v) => _isLoading.value = v;
+
+  void createAccount() async {
+    setLoading(true);
 
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -30,11 +34,12 @@ class SignupController extends GetxController {
 
     ParseResponse apiResponse = await user.signUp();
     if (apiResponse.success && apiResponse.results != null) {
-      isLoading.value = false;
-      Get.offNamed(RouteName.desktopScreen);
+      setLoading(false);
+      Utils.showSnackBarMessage('Success', 'You have successfully Signed Up', Icons.add_alert);
+      Get.offNamed(RouteName.mainScreen);
     } else {
-      isLoading.value = false;
-      Utils.showDialogueBox(context, 'Error', apiResponse.error!.message, Icon(Icons.cloud_off_rounded));
+      setLoading(false);
+      Utils.showSnackBarMessage('Error', apiResponse.error!.message, Icons.error_outline);
     }
   }
 

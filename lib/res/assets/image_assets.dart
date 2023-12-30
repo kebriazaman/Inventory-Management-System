@@ -21,4 +21,6 @@ class ImageAssets {
   static const String posImage1 = 'assets/images/pos1.jpg';
   static const String posImage2 = 'assets/images/pos2.jpg';
   static const String posImage3 = 'assets/images/pos3.png';
+
+  static const String thoughtful = 'assets/images/thoughtful.png';
 }

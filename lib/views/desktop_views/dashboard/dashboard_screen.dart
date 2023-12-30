@@ -4,8 +4,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:pos_fyp/controllers/navigation_controller.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/res/assets/image_assets.dart';
-import 'package:pos_fyp/res/components/dashboard/info_card_widget.dart';
 import 'package:pos_fyp/res/components/dashboard/info_list_card_widget.dart';
+import 'package:pos_fyp/res/components/info_card.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/utils/wave_painter.dart';
@@ -58,6 +58,8 @@ class DashboardScreen extends StatelessWidget {
   ];
 
   final _navigationController = Get.find<NavigationController>();
+
+  DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,11 +125,11 @@ class DashboardScreen extends StatelessWidget {
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    InfoCardWidget('Total Sales', 20000, ImageAssets.SALES_ICON_IMAGE,
+                                    InfoCard('Total Sales', 20000, ImageAssets.SALES_ICON_IMAGE,
                                         AppColors.saleCardIconColor),
-                                    InfoCardWidget('Total Purchase', 49000, ImageAssets.PURCHASE_ICON_IMAGE,
+                                    InfoCard('Total Purchase', 49000, ImageAssets.PURCHASE_ICON_IMAGE,
                                         AppColors.purchaseCardIconColor),
-                                    InfoCardWidget('Total Customers', 30000, ImageAssets.CUSTOMER_ICON_IMAGE,
+                                    InfoCard('Total Customers', 30000, ImageAssets.CUSTOMER_ICON_IMAGE,
                                         AppColors.customerCardIconColor),
                                   ],
                                 ),

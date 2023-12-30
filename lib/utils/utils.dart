@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/utils/extensions.dart';
 
 class Utils {
@@ -10,21 +11,32 @@ class Utils {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  static void showSnackBarMessage(String title, String message) {
+  static void showSnackBarMessage(String title, String message, IconData icon) {
     Get.snackbar(
       title,
       message,
-      icon: Icon(Icons.add_alert),
-    ).show();
+      icon: Icon(icon),
+      duration: const Duration(seconds: 1),
+      backgroundColor: AppColors.blueColor.withOpacity(0.5),
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
+  static void hideKeyboard() {
+    FocusManager.instance.primaryFocus!.unfocus();
   }
 
   static void gainFocus(BuildContext context, FocusNode currentFocus) {
     FocusScope.of(context).requestFocus(currentFocus);
   }
 
+  static void loseFocus(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
+
   static List<Offset> generatePoints(BuildContext context) {
     final points = <Offset>[];
-    const double waveHeight = 20.0;
+    const double waveHeight = 10.0;
     for (int i = 0; i <= Get.width.toInt() + 2; i++) {
       double radian = (i / Get.width) * math.pi * 9;
       double dx = i.toDouble();
@@ -55,6 +67,26 @@ class Utils {
           },
         );
       },
+    );
+  }
+
+  static void showDialogueMessage(String title, String message, IconData icon) {
+    Get.defaultDialog(
+      radius: 10.0,
+      backgroundColor: AppColors.whiteColor,
+      title: title,
+      content: SizedBox(
+        width: Get.width * 0.3,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 30),
+            10.width,
+            Expanded(child: Text(message)),
+          ],
+        ),
+      ),
     );
   }
 }
