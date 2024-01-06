@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/loginController.dart';
@@ -18,10 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController loginController = Get.put(LoginController());
     return GetMaterialApp(
+      scrollBehavior:
+          const MaterialScrollBehavior().copyWith(dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch}),
       themeMode: ThemeMode.system,
       theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.whiteColor,
-      ),
+          scaffoldBackgroundColor: AppColors.whiteColor,
+          appBarTheme: const AppBarTheme(surfaceTintColor: AppColors.whiteColor, color: AppColors.whiteColor)),
       debugShowCheckedModeBanner: false,
       initialRoute: loginController.isFirstSeen.value ? RouteName.loginScreen : RouteName.onboardingScreen,
       getPages: AppRoutes.appRoutes(context),

@@ -6,6 +6,8 @@ import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/utils/extensions.dart';
 
 class Utils {
+  static void generatePdf() async {}
+
   static void fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);

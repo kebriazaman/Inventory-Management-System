@@ -251,11 +251,13 @@ class ProductsController extends GetxController {
         if (parseResponse.success) {
           setLoading(false);
         } else {
+          print(parseResponse.error!.message);
           setLoading(false);
           Utils.showDialogueMessage('Error', parseResponse.error!.message, Icons.error_outline);
         }
       }
     } catch (e) {
+      print(e.toString());
       setLoading(false);
       Utils.showDialogueMessage('Error', e.toString(), Icons.error_outline);
     }
@@ -270,9 +272,7 @@ class ProductsController extends GetxController {
         ParseObject product = apiResponse.results!.first;
         product.set('quantity', qty);
         product.get('quantity') == '0' ? product.set('status', 'out-of-stock') : product.set('status', 'available');
-
         ParseResponse parseResponse = await product.save();
-
         if (parseResponse.success) {
           setLoading(false);
         } else {

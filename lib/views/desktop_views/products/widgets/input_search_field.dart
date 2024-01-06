@@ -28,7 +28,7 @@ class InputSearchField extends StatelessWidget {
             Icons.search,
             color: AppColors.blackColor,
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: Colors.black),

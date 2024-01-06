@@ -12,7 +12,11 @@ class AppExceptions implements ParseException {
 }
 
 class InternetException extends AppExceptions {
-  InternetException([String? message]) : super(message, "No Internet Connection");
+  InternetException([String? message])
+      : super(
+          message,
+          "-1",
+        );
 }
 
 class RequestTimeOut extends AppExceptions {
@@ -23,8 +27,8 @@ class ServerException extends AppExceptions {
   ServerException([String? message]) : super(message, "Internal Server Error");
 }
 
-class InvalidUrlException extends AppExceptions {
-  InvalidUrlException([String? message]) : super(message, "Invalid Url");
+class InvalidClassNameException extends AppExceptions {
+  InvalidClassNameException([String? message]) : super(message, "Invalid ClassName");
 }
 
 class FetchDataException extends AppExceptions {

@@ -17,7 +17,7 @@ class ProductDataSource extends DataGridSource {
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<String>(columnName: 'productId', value: e.objectId),
               DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<String>(columnName: 'category', value: e.category.categoryName),
+              DataGridCell<String>(columnName: 'category', value: e.category?.categoryName),
               DataGridCell<String>(columnName: 'quantity', value: e.quantity),
               DataGridCell<String>(columnName: 'purchasePrice', value: e.purchasePrice),
               DataGridCell<String>(columnName: 'salePrice', value: e.salePrice),

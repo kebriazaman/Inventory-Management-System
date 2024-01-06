@@ -4,7 +4,7 @@ class ImageAssets {
   static const String CUSTOMER_ICON_IMAGE = 'assets/icons/customer_icon.png';
   static const String PURCHASE_ICON_IMAGE = 'assets/icons/purchase_icon.png';
   static const String SALES_ICON_IMAGE = 'assets/icons/sales_icon.png';
-  static const String POS_LOGO = 'assets/images/pos_logo.png';
+  static const String posLogo = 'assets/images/pos_logo.png';
   static const String PROFILE_IMAGE = 'assets/images/profile_image.jpg';
 
   static const String inventoryIconImage = 'assets/icons/inventory_icon.png';

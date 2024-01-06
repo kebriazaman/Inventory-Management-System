@@ -16,7 +16,7 @@ class SideNavBar extends StatelessWidget {
         Container(
           width: Get.width,
           height: Get.height * 0.1,
-          margin: EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(16.0),
           child: CircleAvatar(radius: 20, child: Image.asset(ImageAssets.thoughtful)),
         ),
         Text(loginController.parseUser!.username.toString()),

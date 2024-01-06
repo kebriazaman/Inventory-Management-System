@@ -48,8 +48,6 @@ class NetworkApiServices extends BaseApiService {
       case 200:
         var responseJson = jsonDecode(response.body.toString());
         return responseJson;
-      case 400:
-        throw InvalidUrlException(response.body.toString());
       case 401:
       // throw exception
       case 403:

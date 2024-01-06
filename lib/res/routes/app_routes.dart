@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/res/routes/desktop_app_routes.dart';
 import 'package:pos_fyp/res/routes/mobile_app_routes.dart';
-import 'package:pos_fyp/res/routes/tablet_app_routes.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -10,8 +9,6 @@ class AppRoutes {
     var screenWidth = MediaQuery.sizeOf(context).width;
     if (screenWidth < 400) {
       return MobileAppRoutes.appRoutes();
-    } else if (screenWidth < 1100) {
-      return TabletAppRoutes.tabletAppRoutes();
     } else {
       return DesktopAppRoutes.appRoutes();
     }

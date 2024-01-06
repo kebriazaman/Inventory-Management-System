@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pos_fyp/views/desktop_views/customer_screen.dart';
+import 'package:pos_fyp/views/desktop_views/customers/customer_screen.dart';
 import 'package:pos_fyp/views/desktop_views/dashboard/dashboard_screen.dart';
 import 'package:pos_fyp/views/desktop_views/products/products_screen.dart';
 import 'package:pos_fyp/views/desktop_views/purchase_screen.dart';
 import 'package:pos_fyp/views/desktop_views/reports_screen.dart';
-import 'package:pos_fyp/views/desktop_views/sales_screen.dart';
+import 'package:pos_fyp/views/desktop_views/sales/sales_screen.dart';
 import 'package:pos_fyp/views/desktop_views/settings_screen.dart';
 
 class NavigationController extends GetxController {
@@ -63,7 +63,7 @@ class NavigationController extends GetxController {
       const ProductsScreen(),
       const SalesScreen(),
       const PurchaseScreen(),
-      const CustomersScreen(),
+      CustomersScreen(),
       const ReportsScreen(),
       const SettingsScreen(),
     ].obs;
