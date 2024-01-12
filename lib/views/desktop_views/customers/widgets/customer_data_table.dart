@@ -50,7 +50,7 @@ class CustomerDataTable extends StatelessWidget {
                     horizontalMargin: 20.0,
                     checkboxHorizontalMargin: 10.0,
                     columns: customerController.dataTableColumns,
-                    rows: customerController.customers
+                    rows: customerController.filteredCustomers
                         .map((element) => DataRow2(cells: [
                               DataCell(Text(element.objectId.toString())),
                               DataCell(Text(element.name.toString())),
@@ -64,9 +64,13 @@ class CustomerDataTable extends StatelessWidget {
                                       onPressed: () => customerController.deleteCustomer(element.objectId.toString()),
                                       icon: const Icon(Icons.delete)),
                                   IconButton(
-                                      onPressed: () {
+                                      onPressed: () async{
+                                        customerController.flag.value = 0;
+                                        await customerController.fetchCustomersById(element.objectId.toString());
                                         Get.defaultDialog(
-                                            content: AddCustomerForm(customerController: customerController));
+                                          barrierDismissible: false,
+                                          title: 'Edit',
+                                            content: customerController.isLoading.value ? const SizedBox.shrink() : AddCustomerForm(customerController: customerController, id: element.objectId.toString()));
                                       },
                                       icon: const Icon(Icons.edit))
                                 ],

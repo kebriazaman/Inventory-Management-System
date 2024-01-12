@@ -10,8 +10,9 @@ import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/views/desktop_views/sales/widgets/action_button.dart';
 
 class AddCustomerForm extends StatelessWidget {
-  const AddCustomerForm({required this.customerController, super.key});
+  const AddCustomerForm({required this.id,required this.customerController, super.key});
   final CustomerController customerController;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +95,14 @@ class AddCustomerForm extends StatelessWidget {
                   ActionButton(
                     text: 'Cancel',
                     onPress: () {
-                      Get.delete<CustomerController>();
-                      Get.back();
+                      if (customerController.flag.value != 0) {
+                        Get.delete<CustomerController>();
+                        Get.back();
+                      } else  {
+                        customerController.clearEditingControllers();
+                        Get.back();
+                      }
+
                     },
                     buttonStyle: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(const Size(120, 30)),
@@ -106,11 +113,16 @@ class AddCustomerForm extends StatelessWidget {
                     () => ActionButton(
                       isLoading: customerController.isCustomerLoading.value,
                       focusNode: customerController.saveButtonFocusNode,
-                      text: 'Save',
+                      text: customerController.flag.value == 0 ? 'Edit' : 'Save',
                       onPress: () async {
                         // Utils.generatePdf();
                         if (customerController.customerFormKey.currentState!.validate()) {
-                          await customerController.saveCustomer();
+                          if (customerController.flag.value == 0 && id.isNotEmpty) {
+                            await customerController.editCustomerRecord(id);
+                          } else {
+                            await customerController.saveCustomer();
+                          }
+
                           customerController.clearEditingControllers();
                           Get.back();
                         }

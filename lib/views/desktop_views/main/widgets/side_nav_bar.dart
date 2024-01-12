@@ -19,7 +19,7 @@ class SideNavBar extends StatelessWidget {
           margin: const EdgeInsets.all(16.0),
           child: CircleAvatar(radius: 20, child: Image.asset(ImageAssets.thoughtful)),
         ),
-        Text(loginController.parseUser!.username.toString()),
+        Text(loginController.parseUser!.username.toString() ?? '-----------'),
         const Divider(indent: 20, endIndent: 20),
         Expanded(
           child: ListView.builder(

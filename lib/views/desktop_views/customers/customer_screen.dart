@@ -10,7 +10,7 @@ import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_entry_but
 import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_search_field.dart';
 
 class CustomersScreen extends StatefulWidget {
-  CustomersScreen({Key? key}) : super(key: key);
+  const CustomersScreen({Key? key}) : super(key: key);
 
   @override
   State<CustomersScreen> createState() => _CustomersScreenState();

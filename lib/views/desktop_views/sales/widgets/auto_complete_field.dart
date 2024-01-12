@@ -31,10 +31,11 @@ class AutoCompleteField extends StatelessWidget {
                 hoverColor: AppColors.transparentColor,
                 padding: const EdgeInsets.only(left: 8.0),
                 onPressed: () {
+                  customerController.flag.value = 1;
                   Get.defaultDialog(
                     barrierDismissible: false,
                     title: 'Add Customer',
-                    content: AddCustomerForm(customerController: customerController),
+                    content: AddCustomerForm(customerController: customerController, id: ''),
                   );
                 },
                 icon: const Icon(Icons.add, size: 20.0)),
