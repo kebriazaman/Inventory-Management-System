@@ -4,15 +4,14 @@ import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_form.dart';
 
 class CustomerEntryButton extends StatelessWidget {
-  const CustomerEntryButton({
-    super.key,
-  });
+  const CustomerEntryButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
       onPressed: () {
         Get.defaultDialog(
+          barrierDismissible: false,
           title: 'New customer',
           titleStyle: const TextStyle(fontWeight: FontWeight.w500),
           content: const CustomerForm(),

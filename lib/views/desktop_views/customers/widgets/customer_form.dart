@@ -1,98 +1,72 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
-import 'package:pos_fyp/models/category_model.dart';
+import 'package:pos_fyp/controllers/customer_controller.dart';
 import 'package:pos_fyp/res/app_color.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
-import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_type_form.dart';
+import 'package:pos_fyp/utils/utils.dart';
+import 'package:pos_fyp/views/desktop_views/sales/widgets/action_button.dart';
 
 class CustomerForm extends StatelessWidget {
   const CustomerForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CustomerController customerController = Get.find<CustomerController>();
     return SizedBox(
       width: Get.width * 0.5,
-      height: Get.height * 0.4,
-      child: Form(
+      height: Get.height * 0.5,
+      child: FormBuilder(
+        key: customerController.customerFormKey2,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      cursorColor: AppColors.blackColor,
-                      keyboardType: TextInputType.text,
-                      decoration: kTextFormFieldDecoration.copyWith(
-                          labelText: 'Name', labelStyle: Theme.of(context).textTheme.bodySmall),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) =>
-                          value!.isEmpty || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
-                    ),
+              Row(children: [
+                Expanded(
+                  child: TextFormField(
+                    autofocus: true,
+                    controller: customerController.nameController,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: AppColors.blackColor,
+                    keyboardType: TextInputType.text,
+                    decoration: kTextFormFieldDecoration.copyWith(
+                        labelText: 'Name',
+                        labelStyle: Theme.of(context).textTheme.bodySmall,
+                        prefixIcon: const Icon(Icons.person)),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) =>
+                        value!.isEmpty || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
                   ),
-                  10.width,
-                  Expanded(
-                    child: DropdownSearch<CategoryModel>(
-                        popupProps: PopupProps.menu(
-                          searchFieldProps: TextFieldProps(
-                              autofocus: true,
-                              decoration: kLoginInputFieldDecoration.copyWith(
-                                hintText: 'Search customer',
-                                hintStyle: Theme.of(context).textTheme.bodySmall,
-                              )),
-                          showSearchBox: true,
-                        ),
-                        filterFn: (category, filter) => category.name!.toLowerCase().contains(filter.toLowerCase()),
-                        clearButtonProps: const ClearButtonProps(
-                            color: AppColors.blackColor, isVisible: true, icon: Icon(Icons.clear, size: 16.0)),
-                        itemAsString: (category) => category.name.toString(),
-                        dropdownBuilder: (context, selectedItem) {
-                          return Text(selectedItem?.name ?? 'Search',
-                              style: const TextStyle(color: AppColors.blueColor));
-                        },
-                        validator: (item) =>
-                            GetUtils.isNull(item?.name) || item?.name == 'Select' ? 'Invalid item selected' : null,
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (CategoryModel? category) {},
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: kDropdownFormFieldDecoration.copyWith(
-                          prefixIcon: IconButton(
-                            onPressed: () => Get.defaultDialog(
-                              title: 'Add Customer Type',
-                              titleStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
-                              content: const CustomerTypeForm(),
-                            ),
-                            icon: const Icon(Icons.add),
-                          ),
-                        ))),
-                  ),
-                ],
-              ),
+                )
+              ]),
               20.height,
               Row(
                 children: [
                   Expanded(
                     child: TextFormField(
+                      controller: customerController.phoneNoController,
+                      textInputAction: TextInputAction.next,
                       cursorColor: AppColors.blackColor,
                       keyboardType: TextInputType.number,
                       decoration: kTextFormFieldDecoration.copyWith(labelText: 'Phone Number'),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || !GetUtils.isNum(value.toString())
-                          ? 'Enter the numeric value'
+                      validator: (value) => GetUtils.isLengthLessThan(value, 0) || !GetUtils.isNum(value.toString())
+                          ? 'Enter the phone number'
                           : null,
                     ),
                   ),
                   10.width,
                   Expanded(
                     child: TextFormField(
+                      controller: customerController.emailController,
+                      textInputAction: TextInputAction.next,
                       cursorColor: AppColors.blackColor,
                       keyboardType: TextInputType.number,
                       decoration: kTextFormFieldDecoration.copyWith(labelText: 'Email Address'),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => !GetUtils.isEmail(value.toString()) ? 'Enter valid email address' : null,
                     ),
                   ),
                 ],
@@ -102,25 +76,27 @@ class CustomerForm extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      controller: customerController.cityController,
+                      textInputAction: TextInputAction.next,
                       cursorColor: AppColors.blackColor,
                       keyboardType: TextInputType.text,
                       decoration: kTextFormFieldDecoration.copyWith(
                           labelText: 'City', labelStyle: Theme.of(context).textTheme.bodySmall),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) =>
-                          value!.isEmpty || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
                     ),
                   ),
                   10.width,
                   Expanded(
                     child: TextFormField(
+                      controller: customerController.addressController,
+                      textInputAction: TextInputAction.next,
                       cursorColor: AppColors.blackColor,
                       keyboardType: TextInputType.text,
                       decoration: kTextFormFieldDecoration.copyWith(
                           labelText: 'Address', labelStyle: Theme.of(context).textTheme.bodySmall),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) =>
-                          value!.isEmpty || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
+                      onFieldSubmitted: (_) => Utils.fieldFocusChange(
+                          context, customerController.addressFocusNode, customerController.saveButtonFocusNode),
                     ),
                   ),
                 ],
@@ -129,27 +105,51 @@ class CustomerForm extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: AppColors.cancelButtonColor,
-                      minimumSize: const Size(120, 40),
-                    ),
-                    child: Text(
-                      'Cancel',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: AppColors.cancelButtonTextColor),
-                    ),
+                  ActionButton(
+                    text: 'Cancel',
+                    onPress: () {
+                      customerController.clearEditingControllers();
+                      Get.back();
+                    },
+                    buttonStyle: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(const Size(120, 30)),
+                        backgroundColor: MaterialStateProperty.all(AppColors.cancelButtonColor)),
                   ),
-                  10.width,
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      backgroundColor: AppColors.addButtonColor,
-                      minimumSize: const Size(120, 40),
-                    ),
-                    child: Text(
-                      'Add',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: AppColors.addButtonTextColor),
+                  5.width,
+                  Obx(
+                    () => ActionButton(
+                      isLoading: customerController.isCustomerLoading.value,
+                      focusNode: customerController.saveButtonFocusNode,
+                      text: 'Save',
+                      onPress: () async {
+                        // Utils.generatePdf();
+                        if (customerController.customerFormKey2.currentState!.validate()) {
+                          await customerController.saveCustomer();
+                          customerController.clearEditingControllers();
+                          Get.back();
+                        }
+                        //   final pdf = pw.Document();
+                        //   pdf.addPage(
+                        //     pw.MultiPage(
+                        //       pageFormat: PdfPageFormat.a4,
+                        //       build: (pw.Context context) => [
+                        //         // build title
+                        //         pw.Column(children: [
+                        //           pw.Text('Hello', style: pw.TextStyle(fontSize: 32)),
+                        //         ]),
+                        //       ],
+                        //     ),
+                        //   );
+                        //
+                        //   final dir = await getApplicationDocumentsDirectory();
+                        //   final file = File('${dir.path}/example.pdf');
+                        //   await file.writeAsBytes(await pdf.save());
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => PreviewPdf(pdf: pdf)));
+                        // },
+                      },
+                      buttonStyle: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all(Size(120, 30)),
+                          backgroundColor: MaterialStateProperty.all(AppColors.appButtonColor.withOpacity(0.9))),
                     ),
                   ),
                 ],

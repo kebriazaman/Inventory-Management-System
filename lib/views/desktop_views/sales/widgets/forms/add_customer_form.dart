@@ -10,11 +10,11 @@ import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/views/desktop_views/sales/widgets/action_button.dart';
 
 class AddCustomerForm extends StatelessWidget {
-  const AddCustomerForm({super.key});
+  const AddCustomerForm({required this.customerController, super.key});
+  final CustomerController customerController;
 
   @override
   Widget build(BuildContext context) {
-    final CustomerController customerController = Get.put(CustomerController());
     return SizedBox(
       height: Get.height * 0.6,
       width: Get.width * 0.2,
@@ -26,10 +26,12 @@ class AddCustomerForm extends StatelessWidget {
           children: [
             Expanded(
               child: FormBuilderTextField(
+                autofocus: true,
                 controller: customerController.nameController,
                 focusNode: customerController.nameFocusNode,
                 name: 'name',
-                decoration: kSignupInputFieldDecoration.copyWith(hintText: 'Name', prefixIcon: Icon(Icons.short_text)),
+                decoration:
+                    kSignupInputFieldDecoration.copyWith(hintText: 'Name', prefixIcon: const Icon(Icons.short_text)),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.minLength(3, errorText: 'Enter valid name')
@@ -44,7 +46,7 @@ class AddCustomerForm extends StatelessWidget {
                 focusNode: customerController.phoneFocusNode,
                 name: 'phoneNo',
                 decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'Phone number', prefixIcon: Icon(Icons.phone)),
+                    kSignupInputFieldDecoration.copyWith(hintText: 'Phone number', prefixIcon: const Icon(Icons.phone)),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.integer(errorText: 'Phone number should be integer value'),
@@ -58,8 +60,8 @@ class AddCustomerForm extends StatelessWidget {
                 controller: customerController.emailController,
                 focusNode: customerController.emailFocusNode,
                 name: 'email',
-                decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'Email', prefixIcon: Icon(Icons.email_outlined)),
+                decoration: kSignupInputFieldDecoration.copyWith(
+                    hintText: 'Email', prefixIcon: const Icon(Icons.email_outlined)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.emailFocusNode, customerController.cityFocusNode),
               ),
@@ -70,7 +72,7 @@ class AddCustomerForm extends StatelessWidget {
                 focusNode: customerController.cityFocusNode,
                 name: 'city',
                 decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'City', prefixIcon: Icon(Icons.location_city)),
+                    kSignupInputFieldDecoration.copyWith(hintText: 'City', prefixIcon: const Icon(Icons.location_city)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.cityFocusNode, customerController.addressFocusNode),
               ),
@@ -81,7 +83,7 @@ class AddCustomerForm extends StatelessWidget {
                 focusNode: customerController.addressFocusNode,
                 name: 'address',
                 decoration: kSignupInputFieldDecoration.copyWith(
-                    hintText: 'Address', prefixIcon: Icon(Icons.location_on_outlined)),
+                    hintText: 'Address', prefixIcon: const Icon(Icons.location_on_outlined)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.addressFocusNode, customerController.saveButtonFocusNode),
               ),
@@ -92,11 +94,11 @@ class AddCustomerForm extends StatelessWidget {
                   ActionButton(
                     text: 'Cancel',
                     onPress: () {
-                      customerController.clearEditingControllers();
+                      Get.delete<CustomerController>();
                       Get.back();
                     },
                     buttonStyle: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all(Size(120, 30)),
+                        fixedSize: MaterialStateProperty.all(const Size(120, 30)),
                         backgroundColor: MaterialStateProperty.all(AppColors.cancelButtonColor)),
                   ),
                   5.width,
@@ -132,7 +134,7 @@ class AddCustomerForm extends StatelessWidget {
                         // },
                       },
                       buttonStyle: ButtonStyle(
-                          fixedSize: MaterialStateProperty.all(Size(120, 30)),
+                          fixedSize: MaterialStateProperty.all(const Size(120, 30)),
                           backgroundColor: MaterialStateProperty.all(AppColors.appButtonColor.withOpacity(0.9))),
                     ),
                   ),

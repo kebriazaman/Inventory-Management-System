@@ -9,12 +9,32 @@ import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_data_tabl
 import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_entry_button.dart';
 import 'package:pos_fyp/views/desktop_views/customers/widgets/customer_search_field.dart';
 
-class CustomersScreen extends StatelessWidget {
+class CustomersScreen extends StatefulWidget {
   CustomersScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CustomersScreen> createState() => _CustomersScreenState();
+}
+
+class _CustomersScreenState extends State<CustomersScreen> {
   final Debouncer _debouncer = Debouncer(millisecs: 800);
+
+  late final CustomerController customerController;
+
+  @override
+  void initState() {
+    super.initState();
+    customerController = Get.put(CustomerController());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    Get.delete<CustomerController>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final CustomerController customerController = Get.put(CustomerController());
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -44,7 +64,7 @@ class CustomersScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: Get.height * 0.06),
-                const CustomerDataTable(),
+                const Expanded(child: CustomerDataTable()),
               ],
             ),
           ],

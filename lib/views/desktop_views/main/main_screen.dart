@@ -14,7 +14,10 @@ class MainScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // --------------------- Drawer Section ----------------------
-            const Expanded(flex: 1, child: SideNavBar()),
+            const Expanded(
+              flex: 1,
+              child: SideNavBar(),
+            ),
             const VerticalDivider(),
             // -------------------- page section -------------------------
             Expanded(

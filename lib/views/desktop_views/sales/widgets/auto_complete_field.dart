@@ -34,7 +34,7 @@ class AutoCompleteField extends StatelessWidget {
                   Get.defaultDialog(
                     barrierDismissible: false,
                     title: 'Add Customer',
-                    content: const AddCustomerForm(),
+                    content: AddCustomerForm(customerController: customerController),
                   );
                 },
                 icon: const Icon(Icons.add, size: 20.0)),

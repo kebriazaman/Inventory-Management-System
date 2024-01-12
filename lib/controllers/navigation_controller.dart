@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pos_fyp/views/desktop_views/customers/customer_screen.dart';
 import 'package:pos_fyp/views/desktop_views/dashboard/dashboard_screen.dart';
 import 'package:pos_fyp/views/desktop_views/products/products_screen.dart';
-import 'package:pos_fyp/views/desktop_views/purchase_screen.dart';
 import 'package:pos_fyp/views/desktop_views/reports_screen.dart';
 import 'package:pos_fyp/views/desktop_views/sales/sales_screen.dart';
 import 'package:pos_fyp/views/desktop_views/settings_screen.dart';
@@ -19,14 +18,12 @@ class NavigationController extends GetxController {
   FocusNode screenSelectionNode_4 = FocusNode();
   FocusNode screenSelectionNode_5 = FocusNode();
   FocusNode screenSelectionNode_6 = FocusNode();
-  FocusNode screenSelectionNode_7 = FocusNode();
 
   List<String> get titlesList {
     return [
       'Dashboard',
       'Products',
       'Sale',
-      'Purchase',
       'Customers',
       'Reports',
       'Settings',
@@ -36,9 +33,8 @@ class NavigationController extends GetxController {
   List<IconData> get iconsList {
     return [
       Icons.dashboard,
-      Icons.production_quantity_limits,
-      Icons.point_of_sale,
       Icons.shopping_cart,
+      Icons.point_of_sale,
       Icons.person,
       Icons.receipt,
       Icons.settings,
@@ -53,7 +49,6 @@ class NavigationController extends GetxController {
       screenSelectionNode_4,
       screenSelectionNode_5,
       screenSelectionNode_6,
-      screenSelectionNode_7,
     ].obs;
   }
 
@@ -62,7 +57,6 @@ class NavigationController extends GetxController {
       DashboardScreen(),
       const ProductsScreen(),
       const SalesScreen(),
-      const PurchaseScreen(),
       CustomersScreen(),
       const ReportsScreen(),
       const SettingsScreen(),

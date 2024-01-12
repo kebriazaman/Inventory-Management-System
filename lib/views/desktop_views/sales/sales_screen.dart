@@ -46,15 +46,6 @@ class _SalesScreenState extends State<SalesScreen> {
                   preferredSize: const Size.fromHeight(kToolbarHeight),
                   child: AppBar(
                     surfaceTintColor: AppColors.transparentColor,
-                    leading: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('POS',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .copyWith(fontWeight: FontWeight.w500, color: AppColors.primaryColor)),
-                    ),
-                    // leading: Image.asset(ImageAssets.posLogo, fit: BoxFit.fill),
                     title: Row(
                       children: [
                         AppbarSearchField(debouncer: _debouncer),
