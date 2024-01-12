@@ -6,31 +6,32 @@ class OnboardingPage extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.imageUrl,
+    required this.orientation,
     super.key,
   });
   final String title, subtitle, imageUrl;
+  final Orientation orientation;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: Get.width * 0.8,
-            height: Get.height * 0.4,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.center,
-                repeat: ImageRepeat.noRepeat,
-                image: AssetImage(imageUrl),
-                fit: BoxFit.fill,
-              ),
-            ),
+          Image.asset(
+            imageUrl,
+            fit: BoxFit.contain,
+            width: orientation == Orientation.landscape ? Get.width * 0.5 : Get.width,
+            height: orientation == Orientation.landscape ? Get.height * 0.45 : Get.height * 0.4,
           ),
           Text(title, style: Theme.of(context).textTheme.titleMedium),
-          Text(subtitle, maxLines: 3, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            subtitle,
+            maxLines: 3,
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.justify,
+          ),
         ],
       ),
     );

@@ -19,21 +19,26 @@ class OnboardingScreen extends StatelessWidget {
           children: [
             OnboardingSkipButton(title: 'Skip', onboardingController: onboardingController),
             Expanded(
-              child: PageView.builder(
-                itemCount: onboardingController.contents.length,
-                onPageChanged: onboardingController.onPageChanged,
-                controller: onboardingController.pageController,
-                itemBuilder: (context, index) {
-                  return OnboardingPage(
-                    title: onboardingController.contents[index].title.toString(),
-                    subtitle: onboardingController.contents[index].description.toString(),
-                    imageUrl: onboardingController.contents[index].imageUrl.toString(),
+              child: OrientationBuilder(
+                builder: (context, orientation) {
+                  return PageView.builder(
+                    itemCount: onboardingController.contents.length,
+                    onPageChanged: onboardingController.onPageChanged,
+                    controller: onboardingController.pageController,
+                    itemBuilder: (context, index) {
+                      return OnboardingPage(
+                        title: onboardingController.contents[index].title.toString(),
+                        subtitle: onboardingController.contents[index].description.toString(),
+                        imageUrl: onboardingController.contents[index].imageUrl.toString(),
+                        orientation: orientation,
+                      );
+                    },
                   );
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 32.0, left: 32.0, bottom: 32.0),
+              padding: const EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

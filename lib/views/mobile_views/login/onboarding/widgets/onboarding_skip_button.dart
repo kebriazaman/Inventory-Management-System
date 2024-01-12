@@ -17,7 +17,7 @@ class OnboardingSkipButton extends StatelessWidget {
     return InkWell(
       onTap: onboardingController.skipPageNavigation,
       child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+        padding: const EdgeInsets.only(top: 16.0, right: 24.0),
         child: Text(
           textAlign: TextAlign.right,
           'Skip',

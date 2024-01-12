@@ -38,7 +38,7 @@ class ProductsDataTable extends StatelessWidget {
 
             return DataRow2(
                 selected: selected,
-                onSelectChanged: element.status == 'out-of-stock'
+                onSelectChanged: element.quantity == '0'
                     ? null
                     : (isSelected) {
                         if (isSelected != null) {

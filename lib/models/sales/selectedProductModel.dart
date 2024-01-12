@@ -5,7 +5,8 @@ class SelectedProductModel {
   String? name;
   String? price;
   String? netPrice;
+  int? inStockQty;
   RxInt? qty;
 
-  SelectedProductModel(this.id, this.name, this.price, this.qty, this.netPrice);
+  SelectedProductModel(this.id, this.name, this.price, this.qty, this.netPrice, this.inStockQty);
 }

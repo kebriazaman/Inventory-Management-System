@@ -46,7 +46,8 @@ class ProductDataSource extends DataGridSource {
                   hoverColor: AppColors.transparentColor,
                   icon: const Icon(Icons.delete, color: AppColors.redColor),
                   onPressed: () {
-                    // productsController.deleteProduct(row.getCells()[0].value);
+                    productsController.deleteProduct(row.getCells()[0].value);
+                    productsController.watchItemsStatus();
                   },
                 ),
               )

@@ -99,19 +99,6 @@ class DashboardScreen extends StatelessWidget {
                           child: Text('Dashboard',
                               style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold)),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 20, 48, 55),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage: NetworkImage(
-                                      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')),
-                              Text('Welcome, Admin',
-                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                     AspectRatio(

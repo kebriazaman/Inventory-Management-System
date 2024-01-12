@@ -52,7 +52,7 @@ class SelectedItemsList extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          product = salesController.recalculateProductSummary(product);
+                          salesController.recalculateProductSummary(product);
                         },
                         hoverColor: AppColors.transparentColor,
                         icon: const Icon(Icons.remove, size: 10),
@@ -66,7 +66,6 @@ class SelectedItemsList extends StatelessWidget {
                       5.width,
                       IconButton(
                         onPressed: () {
-                          product.qty!.value += 1;
                           salesController.calculateProductSummary(product);
                         },
                         icon: const Icon(Icons.add, size: 10.0),

@@ -77,6 +77,7 @@ class Utils {
       radius: 10.0,
       backgroundColor: AppColors.whiteColor,
       title: title,
+      titleStyle: const TextStyle(overflow: TextOverflow.ellipsis),
       content: SizedBox(
         width: Get.width * 0.3,
         child: Row(
@@ -85,7 +86,7 @@ class Utils {
           children: [
             Icon(icon, size: 30),
             10.width,
-            Expanded(child: Text(message)),
+            Text(message, textAlign: TextAlign.center),
           ],
         ),
       ),

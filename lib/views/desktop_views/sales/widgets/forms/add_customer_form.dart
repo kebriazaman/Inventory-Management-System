@@ -106,11 +106,11 @@ class AddCustomerForm extends StatelessWidget {
                       focusNode: customerController.saveButtonFocusNode,
                       text: 'Save',
                       onPress: () async {
-                        Utils.generatePdf();
+                        // Utils.generatePdf();
                         if (customerController.customerFormKey.currentState!.validate()) {
                           await customerController.saveCustomer();
-                          Get.back();
                           customerController.clearEditingControllers();
+                          Get.back();
                         }
                         //   final pdf = pw.Document();
                         //   pdf.addPage(

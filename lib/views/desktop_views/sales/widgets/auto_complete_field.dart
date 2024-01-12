@@ -57,20 +57,12 @@ class AutoCompleteField extends StatelessWidget {
         emptyBuilder: (context) => const SizedBox(height: 50, child: Center(child: Text('No Customer found!'))),
         itemBuilder: (context, value) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ListTile(
-              title: Text(
-                value.name.toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
-              ),
-              subtitle: Text(
-                value.phoneNo.toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.w300),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            child: Text(
+              value.name.toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           );
         },

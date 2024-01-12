@@ -131,13 +131,13 @@ class CustomerForm extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'Cancel',
-                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: AppColors.cancelButtonTextColor),
-                    ),
                     style: TextButton.styleFrom(
                       backgroundColor: AppColors.cancelButtonColor,
                       minimumSize: const Size(120, 40),
+                    ),
+                    child: Text(
+                      'Cancel',
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(color: AppColors.cancelButtonTextColor),
                     ),
                   ),
                   10.width,
