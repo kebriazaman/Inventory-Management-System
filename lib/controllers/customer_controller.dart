@@ -34,7 +34,7 @@ class CustomerController extends GetxController {
   TextEditingController emailController = TextEditingController(text: '---');
   TextEditingController cityController = TextEditingController(text: '---');
   TextEditingController addressController = TextEditingController(text: '---');
-  TextEditingController customerEditingController = TextEditingController(text: '---');
+  TextEditingController customerEditingController = TextEditingController();
 
   FocusNode nameFocusNode = FocusNode();
   FocusNode phoneFocusNode = FocusNode();

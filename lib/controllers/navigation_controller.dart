@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pos_fyp/views/desktop_views/customers/customer_screen.dart';
 import 'package:pos_fyp/views/desktop_views/dashboard/dashboard_screen.dart';
 import 'package:pos_fyp/views/desktop_views/products/products_screen.dart';
-import 'package:pos_fyp/views/desktop_views/reports_screen.dart';
+import 'package:pos_fyp/views/desktop_views/reports/reports_screen.dart';
 import 'package:pos_fyp/views/desktop_views/sales/sales_screen.dart';
 import 'package:pos_fyp/views/desktop_views/settings_screen.dart';
 
@@ -57,7 +57,7 @@ class NavigationController extends GetxController {
       DashboardScreen(),
       const ProductsScreen(),
       const SalesScreen(),
-      CustomersScreen(),
+      const CustomersScreen(),
       const ReportsScreen(),
       const SettingsScreen(),
     ].obs;
