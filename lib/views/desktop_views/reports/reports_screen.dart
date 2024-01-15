@@ -1,7 +1,10 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/reports_controller.dart';
+import 'package:pos_fyp/views/desktop_views/reports/widgets/report_screen_header.dart';
 
+import '../../../res/app_color.dart';
 import '../../../utils/utils.dart';
 import '../../../utils/wave_painter.dart';
 
@@ -20,58 +23,37 @@ class ReportsScreen extends StatelessWidget {
         ),
         Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Reports',
-                      style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold)),
-                  Row(children: [
-                    SizedBox(
-                      width: Get.width * 0.2,
-                      child: TextFormField(
-                        validator: (v) => !GetUtils.isDateTime(v!) ? 'Enter valid date format, yy-mm-dd' : null,
-                        keyboardType: TextInputType.datetime,
-                        controller: reportsController.fromDateController,
-                        decoration: InputDecoration(
-                          hintText: 'From Date',
-                          suffixIcon: IconButton(
-                              onPressed: () async {
-                                String? fromDate = (await reportsController.datePicker(context));
-                                reportsController.setFromDate(fromDate);
-                                reportsController.fromDateController.text = reportsController.fromDate.value;
-                              },
-                              icon: const Icon(Icons.calendar_month)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: Get.width * 0.2,
-                      child: TextFormField(
-                        validator: (v) => !GetUtils.isDateTime(v!) ? 'Enter valid date format, yy-mm-dd' : null,
-                        keyboardType: TextInputType.datetime,
-                        controller: reportsController.toDateController,
-                        decoration: InputDecoration(
-                          hintText: 'To Date',
-                          suffixIcon: IconButton(
-                              onPressed: () async {
-                                String toDate = (await reportsController.datePicker(context)).toString();
-                                reportsController.setToDate(toDate);
-                                reportsController.toDateController.text = reportsController.toDate.value;
-                              },
-                              icon: const Icon(Icons.calendar_month)),
-                        ),
-                      ),
-                    ),
-                  ]),
-                ],
-              ),
-            ),
+            const ReportScreenHeader(),
+            SizedBox(height: Get.height * 0.05),
             DefaultTabController(
               initialIndex: reportsController.initialTab.value,
               length: reportsController.tabsList.length,
               child: TabBar(tabs: reportsController.tabsList),
+            ),
+            Expanded(
+              child: DataTable2(
+                dataRowColor: MaterialStateProperty.all(AppColors.whiteColor),
+                dataTextStyle: Theme.of(context).textTheme.bodySmall,
+                headingRowDecoration: BoxDecoration(color: AppColors.primaryColor.withOpacity(0.1)),
+                headingRowHeight: Get.height * 0.05,
+                columnSpacing: 20,
+                horizontalMargin: 20.0,
+                checkboxHorizontalMargin: 10.0,
+                columns: reportsController.tableColumns,
+                rows: reportsController.salesList.map((element) {
+                  return DataRow2(cells: [
+                    DataCell(Text(element.objectId ?? '---')),
+                    DataCell(Text(element.customCreatedAt ?? '---')),
+                    DataCell(Text(element.customer?.name ?? '---')),
+                    DataCell(Text(element.paymentType ?? '---')),
+                    DataCell(Text('Rs. ${element.subtotal}' ?? '---')),
+                    DataCell(Text('Rs. ${element.discount}' ?? '---')),
+                    DataCell(Text('Rs. ${element.collectedAmount}' ?? '---')),
+                    DataCell(Text('Rs. ${element.changeAmount}' ?? '---')),
+                    DataCell(Text('Rs. ${element.grandTotal}' ?? '---')),
+                  ]);
+                }).toList(),
+              ),
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:pos_fyp/models/category_model.dart';
 import 'package:pos_fyp/models/products/products_model.dart';
@@ -109,7 +110,6 @@ class SalesController extends GetxController {
         updateProductsStatus(product);
       } else {
         setButtonLoading(false);
-        print(itemsResponse.error!.message);
       }
     }
 
@@ -123,6 +123,7 @@ class SalesController extends GetxController {
 
       try {
         ParseObject newSale = ParseObject('Sales')
+          ..set('customCreatedAt', DateFormat('yyyy MM dd').format(DateTime.now()))
           ..set('customer', (ParseObject('Customers')..objectId = objectId).toPointer())
           ..set('paymentType', paymentType.value)
           ..set('collectedAmount', cashController.text.trim())
@@ -142,95 +143,20 @@ class SalesController extends GetxController {
           Get.back();
           clearData();
         } else {
-          print(salesResponse.success);
-          print(salesResponse.error!.message);
           setButtonLoading(false);
+          Get.back();
+          clearData();
         }
       } catch (e) {
-        print(e);
+        Get.back();
+        clearData();
       }
     }
   }
-
-  // void getSelectedItems(String name) {
-  //   salesItemsIds.where((element) => element)
-  // }
 
   void updateProductInList(String? productId, String newQtyValue) {
     int index = filteredProducts.indexWhere((element) => element.objectId == productId);
     filteredProducts[index].quantity = newQtyValue;
-  }
-
-  Future<void> saveNewSale(String customerName) async {
-    setButtonLoading(true);
-    QueryBuilder<ParseObject> queryCustomer = QueryBuilder<ParseObject>(ParseObject('Customers'))
-      ..whereEqualTo('name', customerName);
-    ParseResponse response = await queryCustomer.query();
-    if (response.success && response.results != null) {
-      final customerResponse = response.results!.first;
-      final objectId = customerResponse.get('objectId');
-      ParseObject newSale = ParseObject('Sales')
-        ..set('customer', (ParseObject('Customers')..objectId = objectId).toPointer())
-        ..set('paymentType', paymentType.value)
-        ..set('collectedAmount', cashController.text.trim())
-        ..set('changeAmount', changeController.text.trim())
-        ..set('subtotal', subTotal.toStringAsFixed(2))
-        ..set('discount', discount.toStringAsFixed(2))
-        ..set('tax', tax.toStringAsFixed(2))
-        ..set('service', service.toString())
-        ..set('grandTotal', total.toString());
-
-      ParseResponse salesResponse = await newSale.save();
-
-      if (salesResponse.success && salesResponse.results != null) {
-        for (var product in selectedProducts) {
-          ParseObject soldItems = ParseObject('SalesItems')
-            ..set('product', (ParseObject('Products')..objectId = product.id).toPointer())
-            ..set('quantity', product.qty!.value.toString())
-            ..set('netPrice', product.netPrice.toString())
-            ..set('sales', (ParseObject('Sales')..objectId = newSale.objectId).toPointer());
-          ParseResponse itemsResponse = await soldItems.save();
-          if (itemsResponse.success && itemsResponse.results != null) {
-            QueryBuilder<ParseObject> queryBuilder = QueryBuilder(ParseObject('Products'))
-              ..whereEqualTo('objectId', product.id)
-              ..includeObject(['category']);
-
-            ParseResponse res = await queryBuilder.query();
-            if (res.success && res.results != null) {
-              for (var element in res.results!) {
-                print(element);
-              }
-              ParseObject object = res.results!.first;
-              int productQuantity = int.parse(object.get('quantity'));
-              int qty = productQuantity - product.qty!.value;
-              object.set('quantity', qty.toString());
-              ParseResponse parseResponse = await object.save();
-              if (parseResponse.success && parseResponse.results != null) {
-                setButtonLoading(false);
-                clearData();
-              } else {
-                setButtonLoading(false);
-                Utils.showDialogueMessage('Error', parseResponse.error!.message, Icons.error_outline);
-              }
-            } else {
-              setButtonLoading(false);
-              Utils.showDialogueMessage('fError', res.error!.message, Icons.error_outline);
-            }
-          } else {
-            setButtonLoading(false);
-            Utils.showDialogueMessage('Error', itemsResponse.error!.message, Icons.error_outline);
-          }
-        }
-      } else {
-        setButtonLoading(false);
-        Utils.showDialogueMessage('Error', salesResponse.error!.message, Icons.error_outline);
-      }
-    } else {
-      setButtonLoading(false);
-      Utils.showDialogueMessage('Error', response.error!.message, Icons.error_outline);
-    }
-    await fetchAllProducts();
-    Get.back();
   }
 
   Future<void> fetchAllProducts() async {
@@ -258,7 +184,8 @@ class SalesController extends GetxController {
 
   Future<void> fetchAllCategories() async {
     try {
-      QueryBuilder<ParseObject> queryBuilder = QueryBuilder(ParseObject('Category'))..orderByDescending('createdAt');
+      QueryBuilder<ParseObject> queryBuilder = QueryBuilder(ParseObject('Category'))
+        ..orderByDescending('createdAt');
       ParseResponse parseResponse = await queryBuilder.query();
       if (parseResponse.success && parseResponse.results != null) {
         categories.value = mapCategoriesToList(parseResponse.results.toString());

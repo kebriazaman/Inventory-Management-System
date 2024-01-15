@@ -7,6 +7,11 @@ class Back4App {
     const String applicationId = 'TIMXoU124gN8MWZAkRNTq3jZS6ZIhBJCRlhxWTXw';
     const String clientKey = 'rQwMU4ICnHXb2kQZEMJSUA4JzewdtyfYjghlaTFr';
     const String parseServerUrl = 'https://parseapi.back4app.com';
-    await Parse().initialize(applicationId, parseServerUrl, clientKey: clientKey, liveQueryUrl: 'https://fyp.b4a.io');
+    await Parse().initialize(
+      applicationId,
+      parseServerUrl,
+      clientKey: clientKey,
+      liveQueryUrl: 'https://fyp.b4a.io',
+    );
   }
 }

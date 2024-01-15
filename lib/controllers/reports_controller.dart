@@ -1,21 +1,48 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+import 'package:pos_fyp/models/reports/sales_items_model.dart';
+
+import '../models/reports/sales_model.dart';
 
 class ReportsController extends GetxController {
   final RxInt initialTab = 0.obs;
 
-  final RxString _fromDate = ''.obs;
-  final RxString _toDate = ''.obs;
-
-  RxString get fromDate => _fromDate;
-  RxString get toDate => _toDate;
-
-  setFromDate(String value) => _fromDate.value = value;
-  setToDate(String value) => _toDate.value = value;
+  final RxList<SalesModel> salesList = <SalesModel>[].obs;
+  final RxList<SalesItemsModel> salesItemsList = <SalesItemsModel>[].obs;
 
   final TextEditingController fromDateController = TextEditingController();
   final TextEditingController toDateController = TextEditingController();
+
+  final FocusNode fromDateFocusNode = FocusNode();
+  final FocusNode toDateFocusNode = FocusNode();
+  final FocusNode generateBtnFocusNode = FocusNode();
+
+  Future<void> generatingMonthWiseReport() async {
+    QueryBuilder<ParseObject> queryBuilder = QueryBuilder(ParseObject('Sales'))
+      ..includeObject(['customer'])
+      ..whereGreaterThanOrEqualsTo('customCreatedAt', fromDateController.text)
+      ..whereLessThanOrEqualTo('customCreatedAt', toDateController.text);
+    ParseResponse response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      dynamic decodedJson = jsonDecode(response.results.toString());
+      salesList.value = (decodedJson as List).map((e) => SalesModel.fromJson(e)).toList();
+      ParseRelation relObj = response.results!.first['salesItems'];
+      var o = relObj.getQuery()..includeObject(['product']);
+      ParseResponse res = await o.query();
+      if (res.success && res.results != null) {
+        dynamic decodedRel = jsonDecode(res.results.toString());
+        salesItemsList.value = (decodedRel as List).map((e) => SalesItemsModel.fromJson(e)).toList();
+      }
+      print(salesList.first.grandTotal);
+    } else {
+      print(response.error!.message);
+    }
+  }
 
   Future<String?> datePicker(BuildContext context) async {
     String? formattedDate;
@@ -26,10 +53,22 @@ class ReportsController extends GetxController {
       lastDate: DateTime(2030),
     );
     if (date != null) {
-      formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      formattedDate = DateFormat('yyyy MM dd').format(date);
     }
     return formattedDate;
   }
+
+  final List<DataColumn> tableColumns = [
+    const DataColumn(label: Text('id')),
+    const DataColumn(label: Text('Date')),
+    const DataColumn(label: Text('Customer')),
+    const DataColumn(label: Text('Payment')),
+    const DataColumn(label: Text('Subtotal')),
+    const DataColumn(label: Text('Discount')),
+    const DataColumn(label: Text('Collected Amount')),
+    const DataColumn(label: Text('Change Amount')),
+    const DataColumn(label: Text('Total')),
+  ];
 
   final List<Tab> tabsList = [
     const Tab(text: 'January'),
@@ -45,4 +84,9 @@ class ReportsController extends GetxController {
     const Tab(text: 'November'),
     const Tab(text: 'December'),
   ];
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
 }
