@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:pos_fyp/controllers/signup_controller.dart';
 import 'package:pos_fyp/res/app_color.dart';
@@ -28,18 +29,25 @@ class SignupFormWidget extends StatelessWidget {
               children: [
                 const Text('Create Account', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                 Obx(
-                  () => DropdownButton(
-                    elevation: 0,
-                    focusColor: AppColors.transparentColor,
-                    underline: const SizedBox.shrink(),
-                    value: signupController.roleValue.value,
-                    items: signupController.rolesDropdownList.map((e) {
-                      return DropdownMenuItem(value: e, child: Text(e));
-                    }).toList(),
-                    onChanged: (v) {
-                      signupController.setRoleValue(v.toString());
-                    },
-                  ),
+                  () => signupController.isMatched.value
+                      ? DropdownButton(
+                          elevation: 0,
+                          focusColor: AppColors.transparentColor,
+                          underline: const SizedBox.shrink(),
+                          value: signupController.roleValue.value,
+                          items: signupController.rolesDropdownList.map((e) {
+                            return DropdownMenuItem(value: e, child: Text(e));
+                          }).toList(),
+                          onChanged: signupController.isEnable.value
+                              ? (v) {
+                                  signupController.setRoleValue(v.toString());
+                                }
+                              : null,
+                        )
+                      : const SpinKitFadingCircle(
+                          color: AppColors.blueColor,
+                          size: 30,
+                        ),
                 )
               ],
             ),
@@ -57,7 +65,8 @@ class SignupFormWidget extends StatelessWidget {
                 signupController.passwordFocusNode,
               ),
               onChange: (v) {
-                Debouncer(millisecs: 800).run(() {
+                Debouncer(millisecs: 2000).run(() {
+                  print('slkdjf');
                   signupController.checkEmail(v.toString());
                 });
               },
@@ -74,8 +83,7 @@ class SignupFormWidget extends StatelessWidget {
                     context, signupController.passwordFocusNode, signupController.createAccButtonFocusNode),
                 textFormFieldDecoration: kTextInputFieldDecoration.copyWith(
                   suffixIcon: IconButton(
-                    onPressed: () =>
-                        signupController.obscurePassword.value = !signupController.obscurePassword.value,
+                    onPressed: () => signupController.obscurePassword.value = !signupController.obscurePassword.value,
                     icon: signupController.obscurePassword.value == true
                         ? const Icon(Icons.visibility)
                         : const Icon(Icons.visibility_off),

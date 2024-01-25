@@ -4,7 +4,9 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 class SignupController extends GetxController {
   final RxBool _isLoading = false.obs;
+  final RxBool _isEnable = false.obs;
   final RxString _roleValue = 'admin'.obs;
+  final RxBool _isMatched = true.obs;
   final signupFormKey = GlobalKey<FormState>();
   var obscurePassword = true.obs;
 
@@ -15,28 +17,44 @@ class SignupController extends GetxController {
   final FocusNode passwordFocusNode = FocusNode();
   final FocusNode createAccButtonFocusNode = FocusNode();
 
+  RxBool get isEnable => _isEnable;
   RxBool get isLoading => _isLoading;
   RxString get roleValue => _roleValue;
+  RxBool get isMatched => _isMatched;
 
+  setEnable(bool v) => _isEnable.value = v;
   setLoading(bool v) => _isLoading.value = v;
   setRoleValue(String v) => _roleValue.value = v;
+  setMatched(bool v) => _isMatched.value = v;
 
   List<String> rolesDropdownList = ['admin', 'seller', 'normal'];
 
   Future<void> checkEmail(String email) async {
-    final QueryBuilder<ParseObject> queryBuilder = QueryBuilder<ParseObject>(ParseObject('_Role'));
-    try {
-      ParseResponse response = await queryBuilder.query();
-      if (response.success && response.results != null) {
-        for (ParseObject obj in response.results!) {
-          ParseRelation rel = obj['users'];
-          var o = rel.getQuery()..includeObject(['_User']);
-          var res = await o.query();
-          print(res.results);
+    if (email.isNotEmpty) {
+      setMatched(false);
+      final QueryBuilder<ParseObject> queryBuilder = QueryBuilder<ParseObject>(ParseObject('_Role'));
+      try {
+        ParseResponse response = await queryBuilder.query();
+        if (response.success && response.results != null) {
+          for (ParseObject obj in response.results!) {
+            ParseRelation rel = obj['users'];
+            var o = rel.getQuery()..includeObject(['_User']);
+            var res = await o.query();
+            if (res.success && res.results != null) {
+              ParseObject relObj = res.results!.first;
+              if (relObj['username'] == email) {
+                setMatched(true);
+                setEnable(true);
+              } else {
+                setMatched(true);
+                setEnable(false);
+              }
+            }
+          }
         }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
     }
   }
 
