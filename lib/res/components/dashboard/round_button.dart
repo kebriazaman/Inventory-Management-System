@@ -5,7 +5,7 @@ class RoundButton extends StatelessWidget {
   const RoundButton({
     required this.myFocusNode,
     required this.title,
-    required this.onPressed,
+    this.onPressed,
     this.isLoading,
     this.width = 120.0,
     this.height = 40.0,
@@ -14,7 +14,7 @@ class RoundButton extends StatelessWidget {
 
   final FocusNode myFocusNode;
   final String title;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool? isLoading;
   final double width;
   final double height;
@@ -33,7 +33,9 @@ class RoundButton extends StatelessWidget {
       ),
       child: isLoading == true
           ? const SizedBox(
-              height: 20.0, width: 20.0, child: CircularProgressIndicator(color: AppColors.whiteColor, strokeWidth: 2))
+              height: 20.0,
+              width: 20.0,
+              child: CircularProgressIndicator(color: AppColors.whiteColor, strokeWidth: 2))
           : Text(title, style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.whiteColor)),
     );
   }

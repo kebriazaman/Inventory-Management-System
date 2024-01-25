@@ -68,11 +68,13 @@ class LoginController extends GetxController {
       String password = passwordController.text.trim();
       final user = ParseUser(userName, password, null);
       var response = await user.login();
-      if (response.success) {
+      if (response.success && response.results != null) {
         isLoading.value = false;
-        saveLoginCredentials();
+        if (isChecked.value) {
+          saveLoginCredentials();
+        }
         Utils.showSnackBarMessage('Login Successful', 'User successfully logged in', Icons.add_alert);
-        Get.offNamed(RouteName.mainScreen);
+        Get.offNamed(RouteName.mainScreen, arguments: {'username': user.username});
       } else {
         Utils.showSnackBarMessage('Error', response.error!.message, Icons.error_outline);
         isLoading.value = false;

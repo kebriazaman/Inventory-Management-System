@@ -6,6 +6,7 @@ import 'package:pos_fyp/res/components/round_button_widget.dart';
 import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
+import 'package:pos_fyp/utils/utils.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});
@@ -44,6 +45,8 @@ class ResetPasswordScreen extends StatelessWidget {
                   nextFocusNode: resetPasswordController.resetButtonFocusNode,
                   keyboardType: TextInputType.emailAddress,
                   textFormFieldDecoration: kTextFormFieldDecoration.copyWith(labelText: 'Email'),
+                  onSubmit: (v) => Utils.fieldFocusChange(context, resetPasswordController.resetPasswordFocusNode,
+                      resetPasswordController.resetButtonFocusNode),
                 ),
                 20.height,
                 RoundButtonWidget(

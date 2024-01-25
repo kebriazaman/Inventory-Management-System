@@ -43,7 +43,7 @@ class SignupScreen extends StatelessWidget {
                       controller: signupController.emailController,
                       focusNode: signupController.emailFocusNode,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: kSignupInputFieldDecoration.copyWith(
+                      decoration: kTextInputFieldDecoration.copyWith(
                           hintText: 'Email', prefixIcon: const Icon(Icons.email_outlined)),
                       onFieldSubmitted: (_) => Utils.fieldFocusChange(
                           context, signupController.emailFocusNode, signupController.passwordFocusNode),
@@ -58,7 +58,7 @@ class SignupScreen extends StatelessWidget {
                         controller: signupController.passwordController,
                         focusNode: signupController.passwordFocusNode,
                         keyboardType: TextInputType.visiblePassword,
-                        decoration: kSignupInputFieldDecoration.copyWith(
+                        decoration: kTextInputFieldDecoration.copyWith(
                           hintText: 'Password',
                           prefixIcon: const Icon(Icons.lock_reset),
                           suffixIcon: IconButton(
@@ -69,8 +69,8 @@ class SignupScreen extends StatelessWidget {
                                 : const Icon(Icons.visibility_off, color: AppColors.blackColor, size: 20),
                           ),
                         ),
-                        onFieldSubmitted: (_) => Utils.fieldFocusChange(
-                            context, signupController.passwordFocusNode, signupController.createAccButtonFocusNode),
+                        onFieldSubmitted: (_) => Utils.fieldFocusChange(context,
+                            signupController.passwordFocusNode, signupController.createAccButtonFocusNode),
                         validator: (v) => GetUtils.isLengthLessThan(v.toString(), 8)
                             ? 'Password must be at least 8 characters long'
                             : null,
@@ -100,10 +100,8 @@ class SignupScreen extends StatelessWidget {
                             children: [
                               TextSpan(
                                   text: 'Login',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(decoration: TextDecoration.underline, fontWeight: FontWeight.w600)),
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      decoration: TextDecoration.underline, fontWeight: FontWeight.w600)),
                             ],
                           ),
                         ),

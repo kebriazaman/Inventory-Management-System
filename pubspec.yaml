@@ -34,6 +34,8 @@ dependencies:
   pdf: ^3.10.7
   path_provider: ^2.1.1
   printing: ^5.11.1
+  expandable: ^5.0.1
+  expandable_datatable: ^0.0.7
 
 dev_dependencies:
   flutter_test:

@@ -73,7 +73,7 @@ class SalesPaymentForm extends StatelessWidget {
                     child: TextFormField(
                       focusNode: salesController.cashFocusNode,
                       controller: salesController.cashController,
-                      decoration: kSignupInputFieldDecoration.copyWith(
+                      decoration: kTextInputFieldDecoration.copyWith(
                         hintText: '0.00',
                       ),
                       onFieldSubmitted: (_) => Utils.fieldFocusChange(
@@ -95,7 +95,7 @@ class SalesPaymentForm extends StatelessWidget {
                     child: TextFormField(
                       controller: salesController.changeController,
                       focusNode: salesController.changeFocusNode,
-                      decoration: kSignupInputFieldDecoration.copyWith(
+                      decoration: kTextInputFieldDecoration.copyWith(
                         hintText: '0.00',
                       ),
                       validator: FormBuilderValidators.compose([
@@ -117,8 +117,8 @@ class SalesPaymentForm extends StatelessWidget {
                       salesController.clearData();
                       Get.back();
                     },
-                    buttonStyle:
-                        ButtonStyle(backgroundColor: MaterialStateProperty.all(AppColors.redColor.withOpacity(0.9))),
+                    buttonStyle: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(AppColors.redColor.withOpacity(0.9))),
                   ),
                   10.width,
                   Obx(

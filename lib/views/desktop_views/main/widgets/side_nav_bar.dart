@@ -19,7 +19,7 @@ class SideNavBar extends StatelessWidget {
           margin: const EdgeInsets.all(16.0),
           child: CircleAvatar(radius: 20, child: Image.asset(ImageAssets.thoughtful)),
         ),
-        Text(loginController.parseUser!.username.toString() ?? '-----------'),
+        Text(loginController.parseUser?.username ?? '-----------'),
         const Divider(indent: 20, endIndent: 20),
         Expanded(
           child: ListView.builder(
@@ -30,11 +30,14 @@ class SideNavBar extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: Get.height * 0.01, horizontal: Get.width * 0.02),
                 child: Obx(
                   () => Card(
-                    color: navigationController.selectedIndex.value == index ? Colors.lightBlue : AppColors.whiteColor,
+                    color: navigationController.selectedIndex.value == index
+                        ? Colors.lightBlue
+                        : AppColors.whiteColor,
                     child: InkWell(
                       onTap: () {
                         navigationController.selectedIndex.value = index;
-                        FocusScope.of(context).requestFocus(navigationController.sideSelectionBoxFocusNodeList[index]);
+                        FocusScope.of(context)
+                            .requestFocus(navigationController.sideSelectionBoxFocusNodeList[index]);
                       },
                       hoverColor: AppColors.transparentColor,
                       highlightColor: AppColors.transparentColor,

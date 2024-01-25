@@ -17,20 +17,13 @@ const kTextFormFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.all(16.0),
 );
 
-const kLoginInputFieldDecoration = InputDecoration(
-  focusColor: AppColors.blackColor,
-  focusedBorder: UnderlineInputBorder(
-    borderSide: BorderSide(color: AppColors.blackColor),
-  ),
-  contentPadding: EdgeInsets.all(16),
-);
-
-const kSignupInputFieldDecoration = InputDecoration(
+const kTextInputFieldDecoration = InputDecoration(
   focusedBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: AppColors.blackColor),
   ),
   hintText: 'Enter your email',
-  hintStyle: TextStyle(fontSize: 13),
+  hintStyle: TextStyle(fontSize: 14),
+  contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
 );
 
 const kDropdownFormFieldDecoration = InputDecoration(

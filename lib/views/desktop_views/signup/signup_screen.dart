@@ -30,7 +30,7 @@ class SignupScreen extends StatelessWidget {
                   bottomLeft: Radius.circular(32.0),
                 ),
               ),
-              child: SignupFormWidget(),
+              child: const SignupFormWidget(),
             ),
           ],
         ),

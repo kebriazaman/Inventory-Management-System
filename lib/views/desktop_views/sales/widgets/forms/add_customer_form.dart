@@ -10,7 +10,7 @@ import 'package:pos_fyp/utils/utils.dart';
 import 'package:pos_fyp/views/desktop_views/sales/widgets/action_button.dart';
 
 class AddCustomerForm extends StatelessWidget {
-  const AddCustomerForm({required this.id,required this.customerController, super.key});
+  const AddCustomerForm({required this.id, required this.customerController, super.key});
   final CustomerController customerController;
   final String id;
 
@@ -32,7 +32,7 @@ class AddCustomerForm extends StatelessWidget {
                 focusNode: customerController.nameFocusNode,
                 name: 'name',
                 decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'Name', prefixIcon: const Icon(Icons.short_text)),
+                    kTextInputFieldDecoration.copyWith(hintText: 'Name', prefixIcon: const Icon(Icons.short_text)),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.minLength(3, errorText: 'Enter valid name')
@@ -46,8 +46,8 @@ class AddCustomerForm extends StatelessWidget {
                 controller: customerController.phoneNoController,
                 focusNode: customerController.phoneFocusNode,
                 name: 'phoneNo',
-                decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'Phone number', prefixIcon: const Icon(Icons.phone)),
+                decoration: kTextInputFieldDecoration.copyWith(
+                    hintText: 'Phone number', prefixIcon: const Icon(Icons.phone)),
                 validator: FormBuilderValidators.compose([
                   FormBuilderValidators.required(),
                   FormBuilderValidators.integer(errorText: 'Phone number should be integer value'),
@@ -61,7 +61,7 @@ class AddCustomerForm extends StatelessWidget {
                 controller: customerController.emailController,
                 focusNode: customerController.emailFocusNode,
                 name: 'email',
-                decoration: kSignupInputFieldDecoration.copyWith(
+                decoration: kTextInputFieldDecoration.copyWith(
                     hintText: 'Email', prefixIcon: const Icon(Icons.email_outlined)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.emailFocusNode, customerController.cityFocusNode),
@@ -72,8 +72,8 @@ class AddCustomerForm extends StatelessWidget {
                 controller: customerController.cityController,
                 focusNode: customerController.cityFocusNode,
                 name: 'city',
-                decoration:
-                    kSignupInputFieldDecoration.copyWith(hintText: 'City', prefixIcon: const Icon(Icons.location_city)),
+                decoration: kTextInputFieldDecoration.copyWith(
+                    hintText: 'City', prefixIcon: const Icon(Icons.location_city)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.cityFocusNode, customerController.addressFocusNode),
               ),
@@ -83,7 +83,7 @@ class AddCustomerForm extends StatelessWidget {
                 controller: customerController.addressController,
                 focusNode: customerController.addressFocusNode,
                 name: 'address',
-                decoration: kSignupInputFieldDecoration.copyWith(
+                decoration: kTextInputFieldDecoration.copyWith(
                     hintText: 'Address', prefixIcon: const Icon(Icons.location_on_outlined)),
                 onSubmitted: (v) => Utils.fieldFocusChange(
                     context, customerController.addressFocusNode, customerController.saveButtonFocusNode),
@@ -98,11 +98,10 @@ class AddCustomerForm extends StatelessWidget {
                       if (customerController.flag.value != 0) {
                         Get.delete<CustomerController>();
                         Get.back();
-                      } else  {
+                      } else {
                         customerController.clearEditingControllers();
                         Get.back();
                       }
-
                     },
                     buttonStyle: ButtonStyle(
                         fixedSize: MaterialStateProperty.all(const Size(120, 30)),

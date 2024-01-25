@@ -11,7 +11,7 @@ import 'package:pos_fyp/views/desktop_views/login/reset_password_screen.dart';
 import 'package:pos_fyp/views/desktop_views/main/main_screen.dart';
 import 'package:pos_fyp/views/desktop_views/onboarding/onboarding_screen.dart';
 import 'package:pos_fyp/views/desktop_views/products/products_screen.dart';
-import 'package:pos_fyp/views/desktop_views/signup/SignupScreen.dart';
+import 'package:pos_fyp/views/desktop_views/signup/signup_screen.dart';
 
 class DesktopAppRoutes {
   DesktopAppRoutes._();

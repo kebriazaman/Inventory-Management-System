@@ -36,7 +36,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   SizedBox(height: Get.height * 0.02),
                   TextFormField(
                     controller: controller.resetPasswordController,
-                    decoration: kLoginInputFieldDecoration.copyWith(
+                    decoration: kTextInputFieldDecoration.copyWith(
                       hintText: 'Email',
                       prefixIcon: const Icon(Icons.person_outline),
                       suffixIconConstraints: const BoxConstraints(maxHeight: 20, maxWidth: 20),

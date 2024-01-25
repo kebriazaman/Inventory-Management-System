@@ -22,14 +22,21 @@ class ReportsScreen extends StatelessWidget {
           child: Container(),
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const ReportScreenHeader(),
             SizedBox(height: Get.height * 0.05),
             DefaultTabController(
               initialIndex: reportsController.initialTab.value,
               length: reportsController.tabsList.length,
-              child: TabBar(tabs: reportsController.tabsList),
+              child: TabBar(
+                tabs: reportsController.tabsList,
+                dividerColor: AppColors.transparentColor,
+                isScrollable: true,
+                labelPadding: const EdgeInsets.only(right: 32.0, left: 8.0),
+              ),
             ),
+            SizedBox(height: Get.height * 0.02),
             Expanded(
               child: DataTable2(
                 dataRowColor: MaterialStateProperty.all(AppColors.whiteColor),

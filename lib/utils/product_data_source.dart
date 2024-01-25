@@ -117,7 +117,7 @@ class ProductDataSource extends DataGridSource {
       textInputAction: TextInputAction.next,
       controller: editingController..text = displayText,
       cursorHeight: 20.0,
-      decoration: kLoginInputFieldDecoration.copyWith(
+      decoration: kTextInputFieldDecoration.copyWith(
           hintText: '', contentPadding: const EdgeInsets.symmetric(horizontal: 8.0)),
       onChanged: (value) {
         if (value.isNotEmpty) {

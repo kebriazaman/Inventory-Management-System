@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                       controller: loginController.emailController,
                       focusNode: loginController.emailFocusNode,
                       keyboardType: TextInputType.emailAddress,
-                      decoration: kLoginInputFieldDecoration.copyWith(
+                      decoration: kTextInputFieldDecoration.copyWith(
                           hintText: 'Email', prefixIcon: const Icon(Icons.email_outlined)),
                       onFieldSubmitted: (_) => Utils.fieldFocusChange(
                           context, loginController.emailFocusNode, loginController.passwordFocusNode),
@@ -61,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                         controller: loginController.passwordController,
                         focusNode: loginController.passwordFocusNode,
                         keyboardType: TextInputType.visiblePassword,
-                        decoration: kLoginInputFieldDecoration.copyWith(
+                        decoration: kTextInputFieldDecoration.copyWith(
                           hintText: 'Password',
                           prefixIcon: const Icon(Icons.lock_reset),
                           suffixIcon: IconButton(

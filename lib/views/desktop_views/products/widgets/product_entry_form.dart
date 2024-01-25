@@ -35,8 +35,9 @@ class ProductsEntryForm extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       decoration: kTextFormFieldDecoration,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) =>
-                          GetUtils.isNull(value) || GetUtils.isLengthLessThan(value, 3) ? 'Invalid name entered' : null,
+                      validator: (value) => GetUtils.isNull(value) || GetUtils.isLengthLessThan(value, 3)
+                          ? 'Invalid name entered'
+                          : null,
                       onFieldSubmitted: (v) => Utils.fieldFocusChange(
                           context, productsController.nameFocusNode, productsController.qtyFocusNode),
                     ),
@@ -50,10 +51,11 @@ class ProductsEntryForm extends StatelessWidget {
                         },
                         popupProps: PopupProps.menu(
                           searchFieldProps: TextFieldProps(
-                              autofocus: true, decoration: kLoginInputFieldDecoration.copyWith(hintText: 'Search')),
+                              autofocus: true, decoration: kTextInputFieldDecoration.copyWith(hintText: 'Search')),
                           showSearchBox: true,
                         ),
-                        filterFn: (category, filter) => category.name!.toLowerCase().contains(filter.toLowerCase()),
+                        filterFn: (category, filter) =>
+                            category.name!.toLowerCase().contains(filter.toLowerCase()),
                         clearButtonProps: const ClearButtonProps(
                             color: AppColors.blackColor, isVisible: true, icon: Icon(Icons.clear, size: 16.0)),
                         itemAsString: (category) => category.name.toString(),
@@ -72,7 +74,8 @@ class ProductsEntryForm extends StatelessWidget {
                         dropdownDecoratorProps: DropDownDecoratorProps(
                             dropdownSearchDecoration: kDropdownFormFieldDecoration.copyWith(
                           prefixIcon: IconButton(
-                              onPressed: () => Get.defaultDialog(title: 'Add Category', content: const CategoryForm()),
+                              onPressed: () =>
+                                  Get.defaultDialog(title: 'Add Category', content: const CategoryForm()),
                               icon: const Icon(Icons.add)),
                         ))),
                   ),
@@ -85,9 +88,10 @@ class ProductsEntryForm extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       decoration: kTextFormFieldDecoration.copyWith(labelText: 'Quantity'),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
-                          ? 'Enter the numeric value'
-                          : null,
+                      validator: (value) =>
+                          GetUtils.isLengthLessOrEqual(value, 0) || GetUtils.isAlphabetOnly(value!)
+                              ? 'Enter the numeric value'
+                              : null,
                       onFieldSubmitted: (v) => Utils.fieldFocusChange(
                           context, productsController.qtyFocusNode, productsController.purchasePriceFocusNode),
                     ),
@@ -108,8 +112,8 @@ class ProductsEntryForm extends StatelessWidget {
                       validator: (value) => GetUtils.isLengthLessOrEqual(value, 0) || !GetUtils.isNum(value!)
                           ? 'Enter the numeric value'
                           : null,
-                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
-                          context, productsController.purchasePriceFocusNode, productsController.salePriceFocusNode),
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(context,
+                          productsController.purchasePriceFocusNode, productsController.salePriceFocusNode),
                     ),
                   ),
                   10.width,
@@ -160,8 +164,8 @@ class ProductsEntryForm extends StatelessWidget {
                           GetUtils.isNull(value) || GetUtils.isNull(value) || GetUtils.isLengthLessThan(value, 3)
                               ? 'Invalid name entered'
                               : null,
-                      onFieldSubmitted: (v) => Utils.fieldFocusChange(
-                          context, productsController.manufacturerFocusNode, productsController.addButtonFocusNode),
+                      onFieldSubmitted: (v) => Utils.fieldFocusChange(context,
+                          productsController.manufacturerFocusNode, productsController.addButtonFocusNode),
                     ),
                   ),
                 ],

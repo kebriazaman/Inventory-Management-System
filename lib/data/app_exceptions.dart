@@ -1,6 +1,4 @@
-import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-
-class AppExceptions implements ParseException {
+class AppExceptions implements Exception {
   final _code;
   final _prefix;
 
@@ -12,11 +10,7 @@ class AppExceptions implements ParseException {
 }
 
 class InternetException extends AppExceptions {
-  InternetException([String? message])
-      : super(
-          message,
-          "-1",
-        );
+  InternetException([String? message]) : super(message, "-1");
 }
 
 class RequestTimeOut extends AppExceptions {

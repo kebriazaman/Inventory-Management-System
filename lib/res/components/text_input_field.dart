@@ -12,6 +12,8 @@ class TextInputField extends StatelessWidget {
     this.onTap,
     this.validator,
     this.textFormFieldDecoration,
+    required this.onSubmit,
+    this.onChange,
     super.key,
   });
 
@@ -21,6 +23,8 @@ class TextInputField extends StatelessWidget {
   final Icon? suffixIcon;
   bool obscurePassword;
   final VoidCallback? onTap;
+  final Function(String v) onSubmit;
+  final Function(String? v)? onChange;
   String? Function(String?)? validator;
   InputDecoration? textFormFieldDecoration;
   TextInputType keyboardType;
@@ -36,6 +40,9 @@ class TextInputField extends StatelessWidget {
       decoration: textFormFieldDecoration,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
+      textInputAction: TextInputAction.next,
+      onFieldSubmitted: onSubmit,
+      onChanged: onChange,
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:pos_fyp/res/components/text_input_field.dart';
 import 'package:pos_fyp/res/routes/route_name.dart';
 import 'package:pos_fyp/utils/constants.dart';
 import 'package:pos_fyp/utils/extensions.dart';
+import 'package:pos_fyp/utils/utils.dart';
 
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({Key? key}) : super(key: key);
@@ -34,8 +35,10 @@ class LoginFormWidget extends StatelessWidget {
                 currentFocusNode: loginController.emailFocusNode,
                 nextFocusNode: loginController.passwordFocusNode,
                 keyboardType: TextInputType.emailAddress,
-                textFormFieldDecoration: kLoginInputFieldDecoration,
+                textFormFieldDecoration: kTextInputFieldDecoration,
                 validator: (value) => !GetUtils.isEmail(value!) ? 'Enter valid email' : null,
+                onSubmit: (v) => Utils.fieldFocusChange(
+                    context, loginController.emailFocusNode, loginController.passwordFocusNode),
               ),
               SizedBox(height: Get.height * 0.03),
               Obx(
@@ -45,10 +48,13 @@ class LoginFormWidget extends StatelessWidget {
                   nextFocusNode: loginController.buttonFocusNode,
                   obscurePassword: loginController.obscurePassword.value,
                   keyboardType: TextInputType.visiblePassword,
-                  textFormFieldDecoration: kLoginInputFieldDecoration.copyWith(
-                    labelText: 'Enter your password',
+                  onSubmit: (v) => Utils.fieldFocusChange(
+                      context, loginController.passwordFocusNode, loginController.buttonFocusNode),
+                  textFormFieldDecoration: kTextInputFieldDecoration.copyWith(
+                    hintText: 'Enter your password',
                     suffixIcon: IconButton(
-                      onPressed: () => loginController.obscurePassword.value = !loginController.obscurePassword.value,
+                      onPressed: () =>
+                          loginController.obscurePassword.value = !loginController.obscurePassword.value,
                       icon: loginController.obscurePassword.value == true
                           ? const Icon(Icons.visibility)
                           : const Icon(Icons.visibility_off),
@@ -59,18 +65,33 @@ class LoginFormWidget extends StatelessWidget {
                 ),
               ),
               20.height,
-              InkWell(
-                splashColor: AppColors.transparentColor,
-                hoverColor: AppColors.transparentColor,
-                highlightColor: AppColors.transparentColor,
-                onTap: () => Get.toNamed(RouteName.forgotPasswordScreen),
-                child: Text(
-                    textAlign: TextAlign.right,
-                    'Forgot Password',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: AppColors.redColor, decoration: TextDecoration.underline)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Obx(
+                        () => Checkbox(
+                            value: loginController.isChecked.value,
+                            onChanged: (v) => loginController.isChecked.value = !loginController.isChecked.value),
+                      ),
+                      const Text('Remember me'),
+                    ],
+                  ),
+                  InkWell(
+                    splashColor: AppColors.transparentColor,
+                    hoverColor: AppColors.transparentColor,
+                    highlightColor: AppColors.transparentColor,
+                    onTap: () => Get.toNamed(RouteName.forgotPasswordScreen),
+                    child: Text(
+                        textAlign: TextAlign.right,
+                        'Forgot Password?',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColors.redColor, decoration: TextDecoration.underline)),
+                  ),
+                ],
               ),
               20.height,
               Obx(
