@@ -66,7 +66,6 @@ class SignupFormWidget extends StatelessWidget {
               ),
               onChange: (v) {
                 Debouncer(millisecs: 2000).run(() {
-                  print('slkdjf');
                   signupController.checkEmail(v.toString());
                 });
               },
@@ -83,7 +82,8 @@ class SignupFormWidget extends StatelessWidget {
                     context, signupController.passwordFocusNode, signupController.createAccButtonFocusNode),
                 textFormFieldDecoration: kTextInputFieldDecoration.copyWith(
                   suffixIcon: IconButton(
-                    onPressed: () => signupController.obscurePassword.value = !signupController.obscurePassword.value,
+                    onPressed: () =>
+                        signupController.obscurePassword.value = !signupController.obscurePassword.value,
                     icon: signupController.obscurePassword.value == true
                         ? const Icon(Icons.visibility)
                         : const Icon(Icons.visibility_off),

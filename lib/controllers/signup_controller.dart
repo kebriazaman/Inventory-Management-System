@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
+import '../utils/utils.dart';
+
 class SignupController extends GetxController {
   final RxBool _isLoading = false.obs;
   final RxBool _isEnable = false.obs;
@@ -49,6 +51,8 @@ class SignupController extends GetxController {
                 setMatched(true);
                 setEnable(false);
               }
+            } else {
+              print(res.error!.message);
             }
           }
         }
@@ -64,53 +68,71 @@ class SignupController extends GetxController {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     ParseUser user = ParseUser.createUser(email, password, email);
+    if (roleValue.value == 'admin') {
+      // ACL for admin
+      ParseACL adminACL = ParseACL();
+      adminACL.setReadAccess(userId: user.objectId!, allowed: true);
+      adminACL.setWriteAccess(userId: user.objectId!, allowed: true);
+      user.setACL(adminACL);
+      ParseObject products = ParseObject('Products')..setACL(adminACL);
+      await products.save();
+      ParseObject category = ParseObject('Category')..setACL(adminACL);
+      await category.save();
+      ParseObject customers = ParseObject('Customers')..setACL(adminACL);
+      await customers.save();
+      ParseObject sales = ParseObject('Sales')..setACL(adminACL);
+      await sales.save();
+      ParseObject salesItems = ParseObject('SalesItems')..setACL(adminACL);
+      await salesItems.save();
+      print('ACL for admin saved');
+    } else if (roleValue.value == 'seller') {
+      // ACL for seller
+      // ParseACL productsACL = ParseACL();
+      // productsACL.setReadAccess(allowed: true, userId: user.objectId!);
+      // productsACL.setWriteAccess(allowed: true, userId: user.objectId!);
+      // user.setACL(productsACL);
+      // ParseObject products = ParseObject('Products')..setACL(productsACL);
+      // await products.save();
+      // print('acl saved for products');
+      // ParseObject category = ParseObject('Category')..setACL(sellerACL);
+      // await category.save();
+      // ParseObject customers = ParseObject('Customers')..setACL(sellerACL);
+      // await customers.save();
+      // ParseObject sales = ParseObject('Sales')..setACL(sellerACL);
+      // await sales.save();
+      // ParseObject salesItems = ParseObject('SalesItems')..setACL(sellerACL);
+      // await salesItems.save();
 
-    // ACL for admin
-    ParseACL adminACL = ParseACL();
-    adminACL.setPublicReadAccess(allowed: true);
-    adminACL.setPublicWriteAccess(allowed: true);
-    user.setACL(adminACL);
+      ParseACL sellerACL = ParseACL();
+      sellerACL.setPublicWriteAccess(allowed: true);
+      sellerACL.setPublicWriteAccess(allowed: false);
+      ParseResponse apiResponse = await user.signUp();
 
-    // ACL for seller
-    ParseACL sellerACL = ParseACL();
-    sellerACL.setReadAccess(allowed: true, userId: user.objectId!);
-    sellerACL.setWriteAccess(allowed: true, userId: user.objectId!);
-    user.setACL(sellerACL);
-
-    // ACL for normalUser
-    ParseACL normalUser = ParseACL();
-    normalUser.setPublicReadAccess(allowed: true);
-    normalUser.setPublicWriteAccess(allowed: false);
-    user.setACL(normalUser);
-
-    ParseResponse apiResponse = await user.signUp();
-
-    QueryBuilder<ParseObject> queryBuilder = QueryBuilder<ParseObject>(ParseObject('_Role'));
-    ParseResponse roleResponse = await queryBuilder.query();
-    if (roleResponse.success && roleResponse.results != null) {
-      final role = roleResponse.results!;
-      for (ParseObject r in role) {
-        print(r['name']);
+      if (apiResponse.success && apiResponse.results != null) {
+        ParseObject role = ParseObject('_Role')
+          ..set('name', roleValue.value)
+          ..addRelation('users', [user])
+          ..setACL(sellerACL);
+        final ParseResponse response = await role.save();
+        if (response.success && response.results != null) {
+          setLoading(false);
+          Utils.showSnackBarMessage('Success', 'Account Created!', Icons.add_alert);
+        } else {
+          setLoading(false);
+          Utils.showDialogueMessage('Error', response.error!.message, Icons.error_outline_rounded);
+          print(response.error!.message);
+        }
+      } else {
+        setLoading(false);
+        Utils.showSnackBarMessage('Error', apiResponse.error!.message, Icons.error_outline);
       }
+    } else {
+      // ACL for normalUser
+      ParseACL normalUser = ParseACL();
+      normalUser.setPublicReadAccess(allowed: true);
+      normalUser.setPublicWriteAccess(allowed: false);
+      user.setACL(normalUser);
     }
-
-    // if (apiResponse.success && apiResponse.results != null) {
-    //   ParseObject role = ParseObject('_Role')
-    //     ..set('name', 'seller')
-    //     ..addRelation('users', [user])
-    //     ..setACL(adminACL);
-    //   final ParseResponse response = await role.save();
-    //   if (response.success && response.results != null) {
-    //     setLoading(false);
-    //     Utils.showSnackBarMessage('Success', 'You have successfully Signed Up', Icons.add_alert);
-    //     Get.offNamed(RouteName.mainScreen);
-    //   } else {
-    //     print(response.error!.message);
-    //   }
-    // } else {
-    //   setLoading(false);
-    //   Utils.showSnackBarMessage('Error', apiResponse.error!.message, Icons.error_outline);
-    // }
   }
 
   void setUserACL() async {
